@@ -123,3 +123,16 @@ if (num5[0] == num5[1] || num5[2] == num5[0] || num5[2] == num5[1]) {
 else {
     alert("The number doesn't have equal digits")
 }
+
+/////////////
+
+alert("6-digit number")
+
+let num6 = prompt("Please input the 6-digit number: ");
+
+if (num6[0] == num6[5] && num6[1] == num6[4] && num6[2] == num6[3]) {
+    alert("It is mirror number")
+}
+else {
+    alert("It is not mirror number")
+}
