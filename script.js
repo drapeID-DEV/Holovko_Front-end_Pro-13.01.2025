@@ -1,138 +1,50 @@
-alert("Numbers comparison");
+let userAge = prompt("Введіть свій вік: ");
+let ageMessage = "";
 
-let num1 = +prompt("Please input the 1-st number: ");
-
-let num2 = +prompt("Please input the 2-nd number: ");
-
-if (num1 > num2){
-    alert("First number is greater than the second")
-}
-else{
-    alert("Second number is greater than the first")
-}
-
-///////////
-
-alert("Distance comparison");
-
-let distance1 = +prompt("Please input the distance in km: ");
-
-let distance2 = +prompt("Please input the distance in ft: ");
-
-if (distance1 * 1000 > distance2 * 0.305){
-    alert("Distance in ft is less than distance in km")
-}
-else{
-    alert("Distance in km is less than distance in ft")
-}
-
-///////////
-
-alert("Divisor");
-
-let a = +prompt("Please input the 1-st number: ");
-
-let b = +prompt("Please input the 2-nd number: ");
-
-if (a % b == 0){
-    alert("Number b is divisor for number a")
-}
-else{
-    alert("Number b is not divisor for number a")
-}
-
-if (b % a == 0){
-    alert("Number a is divisor for number b")
-}
-else{
-    alert("Number a is not divisor for number b")
-}
-
-///////////
-
-alert("The last digit")
-
-let num = +prompt("Please input the number: ");
-let digit = num % 10;
-
-alert("The last digit: " + digit);
-
-if (digit % 2 == 0){
-    alert("The last digit is even");
-}
-else{
-    alert("The last digit is odd");
-}
-
-///////////
-
-alert("Digit comparison")
-
-let num3 = prompt("Please input the 2-digit number: ");
-if (num3[0] > num3[1]) {
-    alert("The first digit is greater than second");
+if (userAge == null || userAge == ""){
+    ageMessage = "Шкода, що Ви не захотіли ввести своій вік";
 }
 else {
-    alert("The second digit is greater than first");
+    ageMessage = userAge;
 }
 
-///////////
+let userCity = prompt("В якому місті мешкаєте?");
+let userSport = prompt("Який спорт вам більше подобається?(бокс, теніс, футбол)");
+alert(typeof(userSport))
+let cityMessage = "";
+let sportMessage = "";
 
-alert("3-digit number")
-
-let num4 = prompt("Please input the 3-digit number: ");
-let digitSum = +num4[0] + +num4[1] + +num4[2];
-
-if (digitSum % 2 == 0) {
-    alert("The sum of digits is even");
-}
-else{
-    alert("The sum of digits is odd");
-}
-
-if (digitSum % 5 == 0) {
-    alert("The sum of digits is a multiple of 5");
-}
-else{
-    alert("The sum of digits is not a multiple of 5");
-}
-
-if (num4[0] * num4[1] * num4[2] > 100) {
-    alert("The product of digits is greater than 100")
-}
-else {
-    alert("The product of digits is less than 100")
+switch(userCity){
+    case "Київ":
+        cityMessage = "Ти живеш у столиці України";
+        break;
+    case "Вашингтон":
+        cityMessage = "Ти живеш у столиці США";
+        break;
+    case "Лондон":
+        cityMessage = "Ти живеш у столиці Англії";
+        break;
+    case null:
+        cityMessage = "Шкода, що Ви не захотіли ввести своє місто";
+        break;
+    default:
+        cityMessage = `Ти живеш у місті ${userCity}`;
+        break;
 }
 
-///////////
-
-alert("3-digit number")
-
-let num5 = prompt("Please input the 3-digit number: ");
-
-if (num5[0] == num5[1] && num5[2] == num5[0]) {
-    alert("All digits are equal")
-}
-else {
-    alert("Digits are not equal")
-}
-
-if (num5[0] == num5[1] || num5[2] == num5[0] || num5[2] == num5[1]) {
-    alert("The number has equal digits")
-}
-else {
-    alert("The number doesn't have equal digits")
+switch(userSport){
+    case "футбол":
+        sportMessage = "Круто! Хочеш стати Ліонелєм Мессі";
+        break;
+    case "бокс":
+        sportMessage = "Круто! Хочеш стати Олександром Усиком";
+        break;
+    case "теніс":
+        sportMessage = "Круто! Хочеш стати Новаком Джоковичем";
+        break;
+    default:
+        sportMessage = "Шкода, що Ви не захотіли ввести свій улюблений спорт";
+        break;
 }
 
-/////////////
-
-alert("6-digit number")
-
-let num6 = prompt("Please input the 6-digit number: ");
-
-if (num6[0] == num6[5] && num6[1] == num6[4] && num6[2] == num6[3]) {
-    alert("It is mirror number")
-}
-else {
-    alert("It is not mirror number")
-}
+alert(`${ageMessage} \n${cityMessage} \n${sportMessage}`)
