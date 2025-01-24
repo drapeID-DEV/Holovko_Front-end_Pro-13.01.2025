@@ -1,50 +1,16 @@
-let userAge = prompt("Введіть свій вік: ");
-let ageMessage = "";
+let numOrStr = prompt('input number or string');
+console.log(numOrStr);
 
-if (userAge == null || userAge == ""){
-    ageMessage = "Шкода, що Ви не захотіли ввести своій вік";
-}
-else {
-    ageMessage = userAge;
-}
-
-let userCity = prompt("В якому місті мешкаєте?");
-let userSport = prompt("Який спорт вам більше подобається?(бокс, теніс, футбол)");
-alert(typeof(userSport))
-let cityMessage = "";
-let sportMessage = "";
-
-switch(userCity){
-    case "Київ":
-        cityMessage = "Ти живеш у столиці України";
+switch (true) {
+    case numOrStr === null:
+        console.log('ви відмінили');
         break;
-    case "Вашингтон":
-        cityMessage = "Ти живеш у столиці США";
+    case numOrStr.trim() === '':
+        console.log('Empty String');
         break;
-    case "Лондон":
-        cityMessage = "Ти живеш у столиці Англії";
-        break;
-    case null:
-        cityMessage = "Шкода, що Ви не захотіли ввести своє місто";
+    case isNaN(+numOrStr):
+        console.log('number is Ba_NaN');
         break;
     default:
-        cityMessage = `Ти живеш у місті ${userCity}`;
-        break;
+        console.log('OK!');
 }
-
-switch(userSport){
-    case "футбол":
-        sportMessage = "Круто! Хочеш стати Ліонелєм Мессі";
-        break;
-    case "бокс":
-        sportMessage = "Круто! Хочеш стати Олександром Усиком";
-        break;
-    case "теніс":
-        sportMessage = "Круто! Хочеш стати Новаком Джоковичем";
-        break;
-    default:
-        sportMessage = "Шкода, що Ви не захотіли ввести свій улюблений спорт";
-        break;
-}
-
-alert(`${ageMessage} \n${cityMessage} \n${sportMessage}`)
