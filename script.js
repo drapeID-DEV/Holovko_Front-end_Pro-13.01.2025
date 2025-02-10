@@ -1,58 +1,91 @@
-let result = "";
+// let arrLength;
+// let arr = [];
 
-for (let i = 20; i <= 30; i += 0.5) {
-    if (i < 30) {
-        result += i + `, `;
-    } else {
-        result += i;
-    }
-}
+// do {
+//     arrLength = prompt("Please input the array length: ")
+// } while (arrLength.trim() === "" || isNaN(arrLength))
 
-alert(result)
+// for (let i = 0; i < arrLength; i++) {
+//     let element;
 
-/////////////
+//     do {
+//         element = prompt(`Please input ${i + 1} element: `);
+//     } while (element.trim() === "" || isNaN(element))
 
-let rate = 40;
+//     arr.push(element);
+// }
 
-for (let i = 10; i <= 100; i += 10) {
-    alert(`${i} * 40 = ${i * rate}`);
-}
+// alert(`The array we get: ${arr}`);
 
-//////////////
+// alert(`Sorted array: ${arr.sort((a, b) => a - b)}`)
 
-let num;
+// arr.splice(1, 4);
+// alert(`Array after deleting items 2-4: ${arr}`);
 
-result = "";
+//////////
 
-while (num === "" || isNaN(num) || num == undefined) {
-    num = prompt("Please input the number: ")
-}
+let arr1 = [16,-37,54,-4,72,-56,47,4,-16,25,-37,46,4,-51,27,-63,4,-54,76,-4,12,-35,4,47];
 
-for (let i = 1; i <= 100; i++) {
-    if (i ** 2 < num) {
-        result += i + `,`
-    }
-}
+let positiveArr = arr1.filter(num => num > 0);
+let sum = positiveArr.reduce((accumulator, num) => accumulator + num);
 
-alert(result)
+alert(`Sum of positive elements: ${sum} \nAmount of positive elements: ${positiveArr.length}`)
 
 ///////////////
 
-for (let i = 2; i <= num - 1; i++) {
-    if (num % i == 0) {
-        alert("This is prime number");
-        break;
+let minElement = arr1[0];
+let indexOfElem = 0;
+
+for (let i = 0; i < arr1.length - 1; i++) {
+    if (arr1[i] < minElement) {
+        minElement = arr1[i];
+        indexOfElem = i;
     }
 }
 
-//////////////
+alert(`Min element: ${minElement} \nIndex of this element: ${indexOfElem}`)
 
-for (let i = 0; i < num; i++) {
-    if (num == 3 ** i) {
-        alert("We can get a number this way")
-        break;
-    } else if (3 ** i > num) {
-        alert("We can't get this number")
-        break;
+/////////////
+
+let maxElement = arr1[0];
+indexOfElem = 0;
+
+for (let i = 0; i < arr1.length - 1; i++) {
+    if (arr1[i] > maxElement) {
+        maxElement = arr1[i];
+        indexOfElem = i;
     }
 }
+
+alert(`Max element: ${maxElement} \nIndex of this element: ${indexOfElem}`)
+
+/////////////
+
+let negativeArr = arr1.filter((num) => num > 0);
+alert(`Amount of negative elements: ${negativeArr.length}`);
+
+/////////////
+
+let oddArr = arr1.filter((num) => num > 0 && num % 2 != 0);
+alert(`Amount of positive odd elements: ${oddArr.length}`);
+
+/////////////
+
+let evenArr = arr1.filter((num) => num > 0 && num % 2 == 0);
+alert(`Amount of positive even elements: ${evenArr.length}`);
+
+/////////////
+
+alert(`Sum of positive even elements: ${evenArr.reduce((accumulator, num) => accumulator + num)}`);
+
+/////////////
+
+alert(`Sum of positive odd elements: ${oddArr.reduce((accumulator, num) => accumulator + num)}`);
+
+/////////////
+
+alert(`Multyplication of positive elements: ${positiveArr.reduce((accumulator, num) => accumulator * num)}`);
+
+////////////
+
+alert(arr1.map(num => (num != maxElement ? 0 : num)));
