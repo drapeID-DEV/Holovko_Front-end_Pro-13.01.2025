@@ -1,91 +1,19 @@
-let arrLength;
-let arr = [];
+let phones = [];
+let totalBalance = 0;
 
-do {
-    arrLength = prompt("Please input the array length: ")
-} while (arrLength.trim() === "" || isNaN(arrLength))
+let users = [{"index":0,"isActive":true,"balance":"$2,226.60","name":"Eugenia Sawyer","gender":"female","phone":"+1 (840) 583-3207","address":"949 John Street, Rose, Puerto Rico, 1857"}, {"index":1,"isActive":true,"balance":"$2,613.77","name":"Pauline Gallegos","gender":"female","phone":"+1 (985) 593-3328","address":"328 Greenpoint Avenue, Torboy, North Dakota, 6857"}, {"index":2,"isActive":false,"balance":"$3,976.41","name":"Middleton Chaney","gender":"male","phone":"+1 (995) 591-2478","address":"807 Fleet Walk, Brutus, Arkansas, 9783"}, {"index":3,"isActive":true,"balance":"$1,934.58","name":"Burns Poole","gender":"male","phone":"+1 (885) 559-3422","address":"730 Seba Avenue, Osage, Alabama, 6290"}, {"index":4,"isActive":true,"balance":"$3,261.65","name":"Mcfadden Horne","gender":"male","phone":"+1 (942) 565-3988","address":"120 Scholes Street, Kirk, Michigan, 1018"}, {"index":5,"isActive":false,"balance":"$1,790.56","name":"Suzette Lewis","gender":"female","phone":"+1 (837) 586-3283","address":"314 Dunne Place, Bawcomville, Guam, 9053"}]
 
-for (let i = 0; i < arrLength; i++) {
-    let element;
-
-    do {
-        element = prompt(`Please input ${i + 1} element: `);
-    } while (element.trim() === "" || isNaN(element))
-
-    arr.push(element);
+function parseBalance(balance) {
+    let parsedBalance = parseFloat(balance.replace(/[$,]/g, ""));
+    return parsedBalance;
 }
 
-alert(`The array we get: ${arr}`);
-
-alert(`Sorted array: ${arr.sort((a, b) => a - b)}`)
-
-arr.splice(1, 4);
-alert(`Array after deleting items 2-4: ${arr}`);
-
-//////////
-
-let arr1 = [16,-37,54,-4,72,-56,47,4,-16,25,-37,46,4,-51,27,-63,4,-54,76,-4,12,-35,4,47];
-
-let positiveArr = arr1.filter(num => num > 0);
-let sum = positiveArr.reduce((accumulator, num) => accumulator + num);
-
-alert(`Sum of positive elements: ${sum} \nAmount of positive elements: ${positiveArr.length}`)
-
-///////////////
-
-let minElement = arr1[0];
-let indexOfElem = 0;
-
-for (let i = 0; i < arr1.length - 1; i++) {
-    if (arr1[i] < minElement) {
-        minElement = arr1[i];
-        indexOfElem = i;
+for (let index in users) {
+    if (parseBalance(users[index].balance) > 2000.0) {
+        phones.push(users[index].phone)
     }
+    totalBalance += +parseBalance(users[index].balance);
 }
 
-alert(`Min element: ${minElement} \nIndex of this element: ${indexOfElem}`)
-
-/////////////
-
-let maxElement = arr1[0];
-indexOfElem = 0;
-
-for (let i = 0; i < arr1.length - 1; i++) {
-    if (arr1[i] > maxElement) {
-        maxElement = arr1[i];
-        indexOfElem = i;
-    }
-}
-
-alert(`Max element: ${maxElement} \nIndex of this element: ${indexOfElem}`)
-
-/////////////
-
-let negativeArr = arr1.filter((num) => num > 0);
-alert(`Amount of negative elements: ${negativeArr.length}`);
-
-/////////////
-
-let oddArr = arr1.filter((num) => num > 0 && num % 2 != 0);
-alert(`Amount of positive odd elements: ${oddArr.length}`);
-
-/////////////
-
-let evenArr = arr1.filter((num) => num > 0 && num % 2 == 0);
-alert(`Amount of positive even elements: ${evenArr.length}`);
-
-/////////////
-
-alert(`Sum of positive even elements: ${evenArr.reduce((accumulator, num) => accumulator + num)}`);
-
-/////////////
-
-alert(`Sum of positive odd elements: ${oddArr.reduce((accumulator, num) => accumulator + num)}`);
-
-/////////////
-
-alert(`Multyplication of positive elements: ${positiveArr.reduce((accumulator, num) => accumulator * num)}`);
-
-////////////
-
-alert(arr1.map(num => (num != maxElement ? 0 : num)));
+alert(`Phones of users with balance > 2000: ${phones}`);
+alert(`Total balance of all users: ${totalBalance.toFixed(2)}`)
