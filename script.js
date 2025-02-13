@@ -1,26 +1,26 @@
-// let arrLength;
-// let arr = [];
+let arrLength;
+let arr = [];
 
-// do {
-//     arrLength = prompt("Please input the array length: ")
-// } while (arrLength.trim() === "" || isNaN(arrLength))
+do {
+    arrLength = prompt("Please input the array length: ")
+} while (arrLength.trim() === "" || isNaN(arrLength))
 
-// for (let i = 0; i < arrLength; i++) {
-//     let element;
+for (let i = 0; i < arrLength; i++) {
+    let element;
 
-//     do {
-//         element = prompt(`Please input ${i + 1} element: `);
-//     } while (element.trim() === "" || isNaN(element))
+    do {
+        element = prompt(`Please input ${i + 1} element: `);
+    } while (element.trim() === "" || isNaN(element))
 
-//     arr.push(element);
-// }
+    arr.push(element);
+}
 
-// alert(`The array we get: ${arr}`);
+alert(`The array we get: ${arr}`);
 
-// alert(`Sorted array: ${arr.sort((a, b) => a - b)}`)
+alert(`Sorted array: ${arr.sort((a, b) => a - b)}`)
 
-// arr.splice(1, 4);
-// alert(`Array after deleting items 2-4: ${arr}`);
+arr.splice(1, 4);
+alert(`Array after deleting items 2-4: ${arr}`);
 
 //////////
 
