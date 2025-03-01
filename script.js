@@ -1,28 +1,33 @@
-let result = 0;
 
-function sumPrev(num) {
-  result += num;
-  return result;
+function sumPrev() {
+  let result = 0;
+  return function (num) {
+    result += num;
+    return result;
+  };
 }
 
-console.log(result)
-console.log(sumPrev(2))
-console.log(sumPrev(3))
+let add = sumPrev();
 
-////////
+console.log(add(2));
+console.log(add(3));
 
-let testArr = ["123", 24, "name", 12, 0, 2, "qwerty"]
+//////
+
+let testArr = ["123", 24, "name", 12, 0, 2, "qwerty", NaN]
 
 function arithmeticMean(arr) {
   let sum = 0;
+  let counter = 0;
 
   for(let i = 0; i < arr.length; i++) {
-    if(typeof arr[i] === 'number') {
+    if(typeof arr[i] === 'number' && !isNaN(arr[i])) {
       sum += arr[i]
+      counter++;
     }
   }
 
-  return sum / arr.length;
+  return sum / counter;
 }
 
 console.log(arithmeticMean(testArr));
@@ -83,7 +88,7 @@ console.log(array);
 function removeSymbols(str, symb) {
   let result = "";
   for (let i = 0; i < str.length; i++) {
-    if (symb.indexOf(str[i]) === -1) {
+    if (!symb.includes(str[i])) {
       result += str[i];
     }
   }
