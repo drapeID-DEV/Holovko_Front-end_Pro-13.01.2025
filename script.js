@@ -1,6 +1,6 @@
 function pow(num, degree) {
-    if(degree == 2) {
-        return num * num;
+    if(degree == 0) {
+        return 1;
     }
     else {
         return num * pow(num, degree - 1);
