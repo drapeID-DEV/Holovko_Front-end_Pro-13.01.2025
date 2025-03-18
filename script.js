@@ -1,20 +1,31 @@
-let emojis = ["👍", "❤️", "🔥", "🎉", "😂"];
+const prevBtn = document.querySelector(`.prev`);
+const nextBtn = document.querySelector(`.next`);
+const slideList = document.querySelectorAll(`.slide`);
+let index = 0;
 
-let emojisData = {};
-emojis.forEach(emoji => emojisData[emoji] = 0);
+prevBtn.addEventListener("click", goPrev);
+nextBtn.addEventListener("click", goNext);
 
-const container = document.querySelector(`.emojis-container`);
-
-for(const key in emojisData) {
-    const emojiBtn = document.createElement('div');
-    emojiBtn.classList.add(`emoji-content`);
-    emojiBtn.textContent = key;
-    const votesAmount = document.createElement('div');
-    votesAmount.style.textAlign = `center`;
-    votesAmount.textContent = emojisData[key];
-    emojiBtn.addEventListener("click", () => {
-        votesAmount.textContent = ++emojisData[key];
+function update() {
+    slideList.forEach((element, i) => {
+        element.classList.toggle('active', i == index);
     });
-    container.appendChild(emojiBtn);
-    emojiBtn.appendChild(votesAmount);
+    nextBtn.classList.toggle('hideBtn', index == slideList.length - 1)
+    prevBtn.classList.toggle('hideBtn', index == 0)
 }
+
+function goNext() {
+    if(index < slideList.length - 1) {
+        index++;
+        update();
+    }
+}
+
+function goPrev() {
+    if(index > 0) {
+        index--;
+        update();
+    }
+}
+
+update();
