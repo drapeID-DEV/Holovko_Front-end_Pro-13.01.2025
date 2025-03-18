@@ -7,25 +7,25 @@ prevBtn.addEventListener("click", goPrev);
 nextBtn.addEventListener("click", goNext);
 
 function update() {
-    slideList.forEach((element, i) => {
-        element.classList.toggle('active', i == index);
-    });
-    nextBtn.classList.toggle('hideBtn', index == slideList.length - 1)
-    prevBtn.classList.toggle('hideBtn', index == 0)
+  slideList.forEach((element, i) => {
+    element.classList.toggle("active", i == index);
+  });
+  nextBtn.classList.toggle("hideBtn", index == slideList.length - 1);
+  prevBtn.classList.toggle("hideBtn", index == 0);
 }
 
 function goNext() {
-    if(index < slideList.length - 1) {
-        index++;
-        update();
-    }
+  if (index < slideList.length - 1) {
+    index++;
+    update();
+  }
 }
 
 function goPrev() {
-    if(index > 0) {
-        index--;
-        update();
-    }
+  if (index > 0) {
+    index--;
+    update();
+  }
 }
 
 update();
