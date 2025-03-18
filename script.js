@@ -1,31 +1,18 @@
-const prevBtn = document.querySelector(`.prev`);
-const nextBtn = document.querySelector(`.next`);
-const slideList = document.querySelectorAll(`.slide`);
-let index = 0;
+const arr = [1, 4, [2, 6], 2];
 
-prevBtn.addEventListener("click", goPrev);
-nextBtn.addEventListener("click", goNext);
+function generateList(inputArr) {
+    let result = "<ul>";
 
-function update() {
-  slideList.forEach((element, i) => {
-    element.classList.toggle("active", i == index);
-  });
-  nextBtn.classList.toggle("hideBtn", index == slideList.length - 1);
-  prevBtn.classList.toggle("hideBtn", index == 0);
+    inputArr.forEach(element => {
+        if (Array.isArray(element)) {
+            result += `<li>${generateList(element)}</li>`;
+        } else {
+            result += `<li>${element}</li>`;
+        }
+    });
+
+    result += "</ul>";
+    return result;
 }
 
-function goNext() {
-  if (index < slideList.length - 1) {
-    index++;
-    update();
-  }
-}
-
-function goPrev() {
-  if (index > 0) {
-    index--;
-    update();
-  }
-}
-
-update();
+document.body.innerHTML += generateList(arr);
