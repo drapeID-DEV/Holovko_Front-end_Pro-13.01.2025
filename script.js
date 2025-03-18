@@ -1,64 +1,20 @@
-const wrapper = document.querySelector('.wrapper');
-const input = document.querySelector('input');
+let emojis = ["👍", "❤️", "🔥", "🎉", "😂"];
 
-const inputInfo = document.createElement('div');
-inputInfo.textContent = 'More info about input';
+let emojisData = {};
+emojis.forEach(emoji => emojisData[emoji] = 0);
 
-input.addEventListener(`focus`, showInfo)
-input.addEventListener(`blur`, hideInfo)
+const container = document.querySelector(`.emojis-container`);
 
-function showInfo() {
-    wrapper.appendChild(inputInfo)
+for(const key in emojisData) {
+    const emojiBtn = document.createElement('div');
+    emojiBtn.classList.add(`emoji-content`);
+    emojiBtn.textContent = key;
+    const votesAmount = document.createElement('div');
+    votesAmount.style.textAlign = `center`;
+    votesAmount.textContent = emojisData[key];
+    emojiBtn.addEventListener("click", () => {
+        votesAmount.textContent = ++emojisData[key];
+    });
+    container.appendChild(emojiBtn);
+    emojiBtn.appendChild(votesAmount);
 }
-
-function hideInfo() {
-    inputInfo.remove();
-}
-
-////////////
-
-const inputBtn = document.querySelector(`.input-link`);
-const openBtn = document.querySelector(`.open-link`);
-
-inputBtn.addEventListener(`click`, setLink);
-
-function setLink() {
-    let link;
-
-    do{
-        link = prompt("Please input the link: ");
-    } while(!link);
-
-    if(!link.startsWith("http://") && !link.startsWith("https://")) {
-        link = "http://" + link;
-    }
-    openBtn.setAttribute(`href`, link);
-}
-
-/////////////
-
-const newTable = document.createElement(`table`);
-newTable.style.textAlign = `center`;
-document.body.appendChild(newTable);
-
-let value = 1;
-
-for(let i = 0; i < 10; i++) {
-    const newTr = document.createElement(`tr`);
-    newTable.appendChild(newTr);
-    for(let j = 0; j < 10; j++) {
-        const newTd = document.createElement(`td`);
-        newTd.textContent = value++;
-        newTable.children[i].appendChild(newTd);
-    }
-}
-
-///////////////
-
-const newImg = document.createElement(`img`);
-newImg.style.width = `400px`;
-document.body.appendChild(newImg);
-
-let imgNumber = Math.floor(Math.random() * 9) + 1;
-
-newImg.setAttribute(`src`, `./images/${imgNumber}.jpg`);
