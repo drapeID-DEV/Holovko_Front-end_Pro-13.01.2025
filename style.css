@@ -1,0 +1,27 @@
+body {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.wrapper {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 100px;
+    color: #FFF;
+    background-color: darkblue;
+    border-radius: 15px;
+    text-decoration: none;
+}
+
+.btn:hover {
+    cursor: pointer;
+}
