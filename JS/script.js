@@ -35,18 +35,20 @@ let catalog = {
 const categoriesList = document.querySelector(`.categories-list`);
 const categories = Object.keys(catalog);
 
-for (const key in categories) {
-  const newLi = document.createElement("li");
-  categoriesList.appendChild(newLi);
-
-  const newCategoryBtn = document.createElement("button");
-  newCategoryBtn.classList.add(`category-btn`);
-  newCategoryBtn.textContent = categories[key];
-  newCategoryBtn.addEventListener(`click`, updateCategoryProducts);
-  newLi.appendChild(newCategoryBtn);
-}
-
 const productsContainer = document.querySelector(`.products-container`);
+
+function renderCategoryButtons() {
+  for (const key in categories) {
+    const newLi = document.createElement("li");
+    categoriesList.appendChild(newLi);
+
+    const newCategoryBtn = document.createElement("button");
+    newCategoryBtn.classList.add(`category-btn`);
+    newCategoryBtn.textContent = categories[key];
+    newCategoryBtn.addEventListener(`click`, updateCategoryProducts);
+    newLi.appendChild(newCategoryBtn);
+  }
+}
 
 function renderAllProducts() {
   for (const category in catalog) {
@@ -86,14 +88,20 @@ function renderAllProducts() {
   }
 }
 
-renderAllProducts();
-
 function resetProducts() {
   const products = document.querySelectorAll(`.product`);
   products.forEach((product) => (product.style.display = `none`));
 }
 
+renderCategoryButtons();
+renderAllProducts();
 resetProducts();
+
+const aboutProduct = document.querySelector(".about-product");
+
+function hideProductAbout() {
+  aboutProduct.style.visibility = "hidden";
+}
 
 function updateCategoryProducts(event) {
   const target = event.target;
@@ -110,21 +118,6 @@ function updateCategoryProducts(event) {
   });
 }
 
-function confirmBuying() {
-  hideProductAbout();
-  resetProducts();
-  alert("You have bought a product.");
-}
-
-const buyButton = document.querySelector(`.buy-product`);
-buyButton.addEventListener(`click`, confirmBuying);
-
-const aboutProduct = document.querySelector(".about-product");
-
-function hideProductAbout() {
-  aboutProduct.style.visibility = "hidden";
-}
-
 function updateProductInfo(event) {
   aboutProduct.style.visibility = "visible";
   const target = event.target.closest(".product");
@@ -135,3 +128,12 @@ function updateProductInfo(event) {
   const productPrice = document.querySelector(`.about-product-price`);
   productPrice.textContent = target.querySelector(".price").textContent;
 }
+
+function confirmBuying() {
+  hideProductAbout();
+  resetProducts();
+  alert("You have bought a product.");
+}
+
+const buyButton = document.querySelector(`.buy-product`);
+buyButton.addEventListener(`click`, confirmBuying);
