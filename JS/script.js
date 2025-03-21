@@ -42,53 +42,71 @@ for (const key in categories) {
   const newCategoryBtn = document.createElement("button");
   newCategoryBtn.classList.add(`category-btn`);
   newCategoryBtn.textContent = categories[key];
-  newCategoryBtn.addEventListener(`click`, renderCategoryProducts);
+  newCategoryBtn.addEventListener(`click`, updateCategoryProducts);
   newLi.appendChild(newCategoryBtn);
 }
 
 const productsContainer = document.querySelector(`.products-container`);
 
-function resetProducts() {
-  const products = document.querySelectorAll(`.product`);
-  products.forEach((product) => product.remove());
+function renderAllProducts() {
+  for (const category in catalog) {
+    catalog[category].forEach((product) => {
+      const productCard = document.createElement("div");
+      productCard.classList.add(`product`);
+
+      const imgContainer = document.createElement("div");
+      imgContainer.classList.add(`image-container`);
+
+      const productImage = document.createElement("img");
+      productImage.classList.add(`product-image`);
+      productImage.src = product.imageSource;
+
+      const productInfo = document.createElement("div");
+      productInfo.classList.add(`product-info`);
+
+      const productName = document.createElement("h3");
+      productName.classList.add(`product-name`);
+      productName.textContent = product.name;
+
+      const productCost = document.createElement("p");
+      productCost.classList.add(`price`);
+      productCost.textContent = `$${product.cost}`;
+
+      imgContainer.appendChild(productImage);
+      productInfo.appendChild(productName);
+      productInfo.appendChild(productCost);
+
+      productCard.appendChild(imgContainer);
+      productCard.appendChild(productInfo);
+
+      productCard.addEventListener(`click`, updateProductInfo);
+
+      productsContainer.appendChild(productCard);
+    });
+  }
 }
 
-function renderCategoryProducts(event) {
+renderAllProducts();
+
+function resetProducts() {
+  const products = document.querySelectorAll(`.product`);
+  products.forEach((product) => (product.style.display = `none`));
+}
+
+resetProducts();
+
+function updateCategoryProducts(event) {
   const target = event.target;
+  const products = document.querySelectorAll(`.product`);
   hideProductAbout();
   resetProducts();
-  catalog[target.textContent].forEach((product) => {
-    const productCard = document.createElement("div");
-    productCard.classList.add(`product`);
 
-    const imgContainer = document.createElement("div");
-    imgContainer.classList.add(`image-container`);
-
-    const productImage = document.createElement("img");
-    productImage.classList.add(`product-image`);
-    productImage.src = product.imageSource;
-
-    const productInfo = document.createElement("div");
-    productInfo.classList.add(`product-info`);
-
-    const productName = document.createElement("h3");
-    productName.classList.add(`product-name`);
-    productName.textContent = product.name;
-
-    const productCost = document.createElement("p");
-    productCost.classList.add(`price`);
-    productCost.textContent = `$${product.cost}`;
-
-    imgContainer.appendChild(productImage);
-    productInfo.appendChild(productName);
-    productInfo.appendChild(productCost);
-
-    productCard.appendChild(imgContainer);
-    productCard.appendChild(productInfo);
-
-    productCard.addEventListener(`click`, updateProductInfo);
-
-    productsContainer.appendChild(productCard);
+  catalog[target.textContent].forEach((categoryProduct) => {
+    console.log(categoryProduct);
+    products.forEach((product) => {
+      const productName = product.querySelector(`.product-name`).textContent;
+      if (categoryProduct.name == productName) product.style.display = `block`;
+    });
   });
 }
 
