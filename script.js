@@ -1,43 +1,43 @@
 const form = document.querySelector(`form`);
-const saveBtn = document.querySelector(`.save-button`)
+const saveBtn = document.querySelector(`.save-button`);
 
 function capitalizeFirstLetter(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 function getFormData(event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    const formData = new FormData(form);
-    const newTable = document.createElement(`table`);
+  const formData = new FormData(form);
+  const newTable = document.createElement(`table`);
 
-    let langSetted = false;
+  let langSetted = false;
 
-    for(let key of formData.keys()){
-        console.log(formData.get(key));
+  for (let key of formData.keys()) {
+    console.log(formData.get(key));
 
-        const newTr = document.createElement(`tr`);
-        newTr.textContent = `${capitalizeFirstLetter(key)}:\t`;
-        const newTd = document.createElement(`td`);
+    const newTr = document.createElement(`tr`);
+    newTr.textContent = `${capitalizeFirstLetter(key)}:\t`;
+    const newTd = document.createElement(`td`);
 
-        if(key == `languages`) {
-            if(langSetted) continue;
-            let langArr = formData.getAll(key);
-            newTd.textContent = langArr.join(`, `);
-            newTr.appendChild(newTd);
-            langSetted = true;
-        } else {
-            if(!formData.get(key)) {
-                newTd.textContent = "Not provided!";
-            } else {
-                newTd.textContent = capitalizeFirstLetter(formData.get(key));
-            }
-            newTr.appendChild(newTd);
-        }
-        newTable.appendChild(newTr);
+    if (key == `languages`) {
+      if (langSetted) continue;
+      let langArr = formData.getAll(key);
+      newTd.textContent = langArr.join(`, `);
+      newTr.appendChild(newTd);
+      langSetted = true;
+    } else {
+      if (!formData.get(key)) {
+        newTd.textContent = "Not provided!";
+      } else {
+        newTd.textContent = capitalizeFirstLetter(formData.get(key));
+      }
+      newTr.appendChild(newTd);
     }
-    form.style.display = `none`
-    document.body.appendChild(newTable);
+    newTable.appendChild(newTr);
+  }
+  form.style.display = `none`;
+  document.body.appendChild(newTable);
 }
 
-saveBtn.addEventListener(`click`, getFormData)
+saveBtn.addEventListener(`click`, getFormData);
