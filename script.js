@@ -14,8 +14,6 @@ function getFormData(event) {
   let langSetted = false;
 
   for (let key of formData.keys()) {
-    console.log(formData.get(key));
-
     const newTr = document.createElement(`tr`);
     newTr.textContent = `${capitalizeFirstLetter(key)}:\t`;
     const newTd = document.createElement(`td`);
