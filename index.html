@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/server-endpoint">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="surname">Surname:</label>
+        <input type="text" id="surname" name="surname" required>
+
+        <p>Sex:</p>
+        <input type="radio" id="male" name="sex" value="male">
+        <label for="male">Male</label>
+        <br>
+        <input type="radio" id="female" name="sex" value="female">
+        <label for="female">Female</label>
+        <br>
+        <br>
+        <label for="city">City:</label>
+        <select name="city" id="city">
+            <option value="odessa">Odessa</option>
+            <option value="lviv">Lviv</option>
+            <option value="kyiv">Kyiv</option>
+            <option value="zhitomir">Zhitomir</option>
+            <option value="poltava">Poltava</option>
+        </select>
+        <br>
+        <br>
+        <label for="address">Address:</label>
+        <textarea name="address" id="address" required></textarea>
+        <p>Languges:</p>
+        <input type="checkbox" id="english" name="languages" value="english">
+        <label for="english">English</label>
+        <input type="checkbox" id="ukrainian" name="languages" value="ukrainian">
+        <label for="ukrainian">Ukrainian</label>
+        <input type="checkbox" id="german" name="languages" value="german">
+        <label for="german">German</label>
+        <br>
+        <br>
+        <button class="save-button">Save</button>
+    </form>
+    <script src="./script.js"></script>
+</body>
+</html>
