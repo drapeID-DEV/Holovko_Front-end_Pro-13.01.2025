@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="fonts/stylesheet.css" />
     <title>GREENSHOP</title>
   </head>
-
   <body>
     <section class="startScreen">
       <header class="main-header">
@@ -92,9 +91,6 @@
             <h1 class="categories-header">Categories</h1>
             <ul class="categories-list"></ul>
           </div>
-          <a class="banner" href=""
-            ><img src="./images/supersale.png" alt="supersale"
-          /></a>
         </div>
         <div class="content">
           <div class="products-container"></div>
@@ -105,10 +101,47 @@
             <h3 class="about-product-price"></h3>
             <button class="buy-product">BUY</button>
           </div>
+          <div class="form-container">
+            <form class="buy-form" action="/server-endpoint">
+              <label for="fullname">Full name</label>
+              <input type="text" id="fullname" name="fullname" />
+              <div class="city-selector">
+                <label for="city">City</label>
+                <select name="city" id="city">
+                  <option value="odessa">Odessa</option>
+                  <option value="lviv">Lviv</option>
+                  <option value="kyiv">Kyiv</option>
+                  <option value="zhitomir">Zhitomir</option>
+                  <option value="poltava">Poltava</option>
+                </select>
+              </div>
+              <label for="warehouse">Warehouse number(Nova Poshta)</label>
+              <input type="number" id="warehouse" name="warehouse" />
+              <div class="payment-container">
+                <p class="payment-label">Payment method:</p>
+                <input type="radio" id="card" name="payment" value="card" />
+                <label for="card">By card</label>
+                <br />
+                <input
+                  type="radio"
+                  id="postpaid"
+                  name="payment"
+                  value="postpaid"
+                />
+                <label for="postpaid">Postpaid</label>
+              </div>
+              <label for="amount">Amount</label>
+              <input type="number" id="amount" name="amount" required />
+              <label for="comment">Comment</label>
+              <textarea name="comment" id="comment"></textarea>
+              <button class="submit-button">Submit</button>
+            </form>
+          </div>
         </div>
       </div>
     </section>
     <div class="copy">&copy; 2021 GreenShop. All Rights Reserved.</div>
+    <div class="delivery-container"></div>
     <script src="./JS/script.js"></script>
   </body>
 </html>
