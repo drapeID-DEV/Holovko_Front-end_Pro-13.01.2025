@@ -38,7 +38,7 @@ const categories = Object.keys(catalog);
 const productsContainer = document.querySelector(`.products-container`);
 
 const buyForm = document.querySelector(`.buy-form`);
-const submitBtn = document.querySelector(`.submit-button`)
+const submitBtn = document.querySelector(`.submit-button`);
 
 function renderCategoryButtons() {
   for (const key in categories) {
@@ -114,7 +114,7 @@ function updateCategoryProducts(event) {
   const target = event.target;
   const products = document.querySelectorAll(`.product`);
   hideProductAbout();
-  hideBuyForm()
+  hideBuyForm();
   resetProducts();
 
   catalog[target.textContent].forEach((categoryProduct) => {
@@ -142,7 +142,7 @@ function confirmBuying() {
   buyForm.style.visibility = "visible";
 }
 
-const deliveryContainer = document.querySelector(`.delivery-container`)
+const deliveryContainer = document.querySelector(`.delivery-container`);
 
 function capitalizeFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -155,7 +155,7 @@ function submitDelivery() {
 }
 
 function renderDelivery(info) {
-  if(document.querySelector(`.delivery-message`)) {
+  if (document.querySelector(`.delivery-message`)) {
     document.querySelector(`.delivery-message`).remove();
   }
   deliveryContainer.style.display = `block`;
@@ -165,7 +165,8 @@ function renderDelivery(info) {
 
   deliveryContainer.style.display = `block`;
   const productName = document.querySelector(`.about-product-name`).textContent;
-  const productPrice = document.querySelector(`.about-product-price`).textContent;
+  const productPrice =
+    document.querySelector(`.about-product-price`).textContent;
 
   const productField = document.createElement(`p`);
   productField.className = `delivery-field`;
@@ -177,7 +178,7 @@ function renderDelivery(info) {
   productValue.textContent = productName;
   deliveryMessage.appendChild(productValue);
 
-  for(let key in info) {
+  for (let key in info) {
     const fieldName = document.createElement(`p`);
     fieldName.className = `delivery-field`;
     fieldName.textContent = `${capitalizeFirstLetter(key)}:`;
@@ -197,7 +198,9 @@ function renderDelivery(info) {
 
   const priceValue = document.createElement(`p`);
   priceValue.className = `delivery-value`;
-  priceValue.textContent = `$${parseFloat(productPrice.replace(/[^0-9.]/g, "")) * +info.amount}`;
+  priceValue.textContent = `$${
+    parseFloat(productPrice.replace(/[^0-9.]/g, "")) * +info.amount
+  }`;
   deliveryMessage.appendChild(priceValue);
 
   const deliveryBtn = document.createElement(`button`);
@@ -209,14 +212,15 @@ function renderDelivery(info) {
 
 function removeErrorMessage(event) {
   const target = event.target;
-  if(target.type == "radio") {
-    if(document.querySelector(`.payment-container + .error-message`)) {
+  if (target.type == "radio") {
+    if (document.querySelector(`.payment-container + .error-message`)) {
       document.querySelector(`.payment-container + .error-message`).remove();
     }
-  }
-  else {
-    const prevErrorMessage = document.querySelector(`#${this.id} + .error-message`);
-    if(prevErrorMessage) {
+  } else {
+    const prevErrorMessage = document.querySelector(
+      `#${this.id} + .error-message`
+    );
+    if (prevErrorMessage) {
       prevErrorMessage.remove();
     }
   }
@@ -234,31 +238,34 @@ function submitForm(event) {
   for (let key of formData.keys()) {
     const currentInputField = document.querySelector(`#${key}`);
     const prevErrorMessage = document.querySelector(`#${key} + .error-message`);
-    if(key === "payment") {
-      if(!formData.get(key)) {
-        if(!document.querySelector(`.payment-container + .error-message`)) {
-          console.log(formData.get(key))
+    if (key === "payment") {
+      if (!formData.get(key)) {
+        if (!document.querySelector(`.payment-container + .error-message`)) {
+          console.log(formData.get(key));
           const errorMessage = document.createElement(`p`);
           errorMessage.className = `error-message`;
           errorMessage.textContent = `Please input ${key}*`;
-          document.querySelector(`.payment-container`).insertAdjacentElement("afterend", errorMessage);
-          const paymentButtons = document.querySelectorAll(`.payment-container input`);
-          paymentButtons.forEach(element => element.addEventListener(`click`, removeErrorMessage));
+          document
+            .querySelector(`.payment-container`)
+            .insertAdjacentElement("afterend", errorMessage);
+          const paymentButtons = document.querySelectorAll(
+            `.payment-container input`
+          );
+          paymentButtons.forEach((element) =>
+            element.addEventListener(`click`, removeErrorMessage)
+          );
+          formIsValid = false;
+          continue;
+        } else {
           formIsValid = false;
           continue;
         }
-        else {
-          formIsValid = false;
-          continue;
-        }
-      }
-      else {
+      } else {
         userData[key] = formData.get(key);
       }
-    }
-    else {
-      if(!currentInputField.value.trim() && key !== "comment") {
-        if(!prevErrorMessage) {
+    } else {
+      if (!currentInputField.value.trim() && key !== "comment") {
+        if (!prevErrorMessage) {
           const errorMessage = document.createElement(`p`);
           errorMessage.className = `error-message`;
           errorMessage.textContent = `Please input ${key}*`;
@@ -266,25 +273,23 @@ function submitForm(event) {
           currentInputField.addEventListener(`focus`, removeErrorMessage);
           formIsValid = false;
           continue;
-        }
-        else {
+        } else {
           formIsValid = false;
           continue;
         }
-      }
-      else if(formData.get(key)) {
+      } else if (formData.get(key)) {
         userData[key] = formData.get(key);
       }
     }
   }
-  if(!formIsValid) {
+  if (!formIsValid) {
     alert("Complete the form!");
   } else {
     renderDelivery(userData);
   }
 }
 
-submitBtn.addEventListener(`click`, submitForm)
+submitBtn.addEventListener(`click`, submitForm);
 
 const buyButton = document.querySelector(`.buy-product`);
 buyButton.addEventListener(`click`, confirmBuying);
