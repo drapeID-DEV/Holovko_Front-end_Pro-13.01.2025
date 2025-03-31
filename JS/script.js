@@ -89,7 +89,7 @@ function renderPreviousOrders(orderKey = null) {
 
     const orderPrice = document.createElement("div");
     orderPrice.classList.add("prev-order-price");
-    orderPrice.textContent = prevOrder.price;
+    orderPrice.textContent = `$${parseFloat(prevOrder.price.replace(/[^0-9.]/g, "")) * +prevOrder.amount}`;
 
     newOrderBtn.appendChild(orderTime);
     newOrderBtn.appendChild(orderPrice);
