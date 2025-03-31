@@ -275,7 +275,6 @@ ul {
 }
 
 /*CATALOG*/
-
 .container-catalog {
     display: flex;
     max-width: 1200px;
@@ -284,15 +283,39 @@ ul {
     justify-content: space-between;
 }
 
+.tab-selector {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    padding: 0 30px;
+}
+
+.tab-btn {
+    font-family: 'Cera Pro';
+    font-size: 15px;
+    font-weight: normal;
+    line-height: 40px;
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    border: 0;
+    transition: all 0.2s linear;
+    &:hover {
+        cursor: pointer;
+        font-weight: 700;
+        color: #46A358;
+    }
+}
+
 .container-catalog .categories-container {
+    height: 775px;
+    background-color: #FBFBFB;
     max-width: 20%;
     width: 100%;
     margin-right: 40px;
 }
 
 .categories {
-    height: 775px;
-    background-color: #FBFBFB;
     padding-left: 30px;
 }
 
@@ -300,7 +323,21 @@ ul {
     font-size: 18px;
     font-weight: 700;
     line-height: 16px;
-    padding: 20px 0 0 20px;
+    padding: 30px 0 0 20px;
+}
+
+.history-container {
+    display: none;
+    margin-top: 30px;
+    padding: 0 20px;
+}
+
+.history-header {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .categories-list {
@@ -322,12 +359,34 @@ ul {
     background-color: transparent;
     border: 0;
     transition: all 0.2s linear;
+    &:hover {
+        cursor: pointer;
+        font-weight: 700;
+        color: #46A358;
+    }
 }
 
-.category-btn:hover {
-    cursor: pointer;
-    font-weight: 700;
-    color: #46A358;
+.prev-order-btn {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Cera Pro';
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: normal;
+    line-height: 40px;
+    padding: 0 5px;
+    margin-bottom: 10px;
+    background-color: transparent;
+    transition: all 0.2s linear;
+    &:hover {
+        cursor: pointer;
+        color: #46A358;
+        border: 1px solid #46A358;
+    }
 }
 
 .catalog-header {
@@ -636,7 +695,7 @@ select {
     color: red;
 }
 
-.delivery-container {
+.modal-container {
     display: none;
     z-index: 100;
     position: fixed;
@@ -647,10 +706,9 @@ select {
     background: rgba(0, 0, 0, 0.5);
 }
 
-.delivery-message {
+.modal-message {
     text-align: center;
     padding: 30px;
-    padding-bottom: 100px;
     z-index: 1000;
     position: fixed;
     top: 0;
@@ -663,13 +721,13 @@ select {
     transform: translate(-50%, -50%);
 }
 
-.delivery-field {
+.modal-field {
     font-size: 25px;
     font-weight: 700;
     margin-bottom: 5px;
 }
 
-.delivery-value {
+.modal-value {
     overflow: hidden;
     max-width: 100%;
     width: 100%;
@@ -678,7 +736,7 @@ select {
     margin-bottom: 10px;
 }
 
-.delivery-button {
+.modal-button {
     margin-top: 10px;
     width: 100px;
     height: 30px;

@@ -32,13 +32,30 @@ let catalog = {
   ],
 };
 
+const categoriesContainer = document.querySelector(`.categories`);
 const categoriesList = document.querySelector(`.categories-list`);
 const categories = Object.keys(catalog);
+const categoriesTab = document.querySelector(`.show-categories`);
+categoriesTab.addEventListener(`click`, showCategories);
+
+const historyContainer = document.querySelector(`.history-container`);
+const historyList = document.querySelector(`.history-list`);
+const historyTab = document.querySelector(`.show-history`);
+historyTab.addEventListener(`click`, showHistory);
 
 const productsContainer = document.querySelector(`.products-container`);
+const productTemplate = document.querySelector(`#product-template`);
 
 const buyForm = document.querySelector(`.buy-form`);
 const submitBtn = document.querySelector(`.submit-button`);
+
+const aboutProduct = document.querySelector(".about-product");
+
+const modalContainer = document.querySelector(`.modal-container`);
+const modalMessage = document.querySelector(`.modal-message`);
+
+let selectedProductName;
+let selectedProductPrice;
 
 function renderCategoryButtons() {
   for (const key in categories) {
@@ -53,40 +70,50 @@ function renderCategoryButtons() {
   }
 }
 
+function renderPreviousOrders(orderKey = null) {
+  const keys = orderKey ? [orderKey] : Object.keys(localStorage);
+
+  for (const key of keys) {
+    const prevOrder = JSON.parse(localStorage.getItem(key));
+
+    const newLi = document.createElement("li");
+    historyList.appendChild(newLi);
+
+    const newOrderBtn = document.createElement("button");
+    newOrderBtn.classList.add("prev-order-btn");
+    newOrderBtn.setAttribute("data-orderID", key);
+
+    const orderTime = document.createElement("div");
+    orderTime.classList.add("prev-order-time");
+    orderTime.textContent = prevOrder.time;
+
+    const orderPrice = document.createElement("div");
+    orderPrice.classList.add("prev-order-price");
+    orderPrice.textContent = prevOrder.price;
+
+    newOrderBtn.appendChild(orderTime);
+    newOrderBtn.appendChild(orderPrice);
+    newOrderBtn.addEventListener("click", showHistoryOrderDetails);
+    newLi.appendChild(newOrderBtn);
+  }
+}
+
 function renderAllProducts() {
   for (const category in catalog) {
     catalog[category].forEach((product) => {
-      const productCard = document.createElement("div");
-      productCard.classList.add(`product`);
+      const productClone = productTemplate.content.cloneNode(true);
+      const productCard = productClone.querySelector(".product");
 
-      const imgContainer = document.createElement("div");
-      imgContainer.classList.add(`image-container`);
+      const productImage = productClone.querySelector(".product-image");
+      const productName = productClone.querySelector(".product-name");
+      const productCost = productClone.querySelector(".price");
 
-      const productImage = document.createElement("img");
-      productImage.classList.add(`product-image`);
       productImage.src = product.imageSource;
-
-      const productInfo = document.createElement("div");
-      productInfo.classList.add(`product-info`);
-
-      const productName = document.createElement("h3");
-      productName.classList.add(`product-name`);
       productName.textContent = product.name;
-
-      const productCost = document.createElement("p");
-      productCost.classList.add(`price`);
       productCost.textContent = `$${product.cost}`;
 
-      imgContainer.appendChild(productImage);
-      productInfo.appendChild(productName);
-      productInfo.appendChild(productCost);
-
-      productCard.appendChild(imgContainer);
-      productCard.appendChild(productInfo);
-
       productCard.addEventListener(`click`, updateProductInfo);
-
-      productsContainer.appendChild(productCard);
+      productsContainer.appendChild(productClone);
     });
   }
 }
@@ -96,11 +123,20 @@ function resetProducts() {
   products.forEach((product) => (product.style.display = `none`));
 }
 
+function showCategories() {
+  historyContainer.style.display = `none`;
+  categoriesContainer.style.display = `block`;
+}
+
+function showHistory() {
+  categoriesContainer.style.display = `none`;
+  historyContainer.style.display = `block`;
+}
+
 renderCategoryButtons();
+renderPreviousOrders();
 renderAllProducts();
 resetProducts();
-
-const aboutProduct = document.querySelector(".about-product");
 
 function hideProductAbout() {
   aboutProduct.style.visibility = "hidden";
@@ -132,9 +168,11 @@ function updateProductInfo(event) {
 
   const productName = document.querySelector(`.about-product-name`);
   productName.textContent = target.querySelector(".product-name").textContent;
+  selectedProductName = productName.textContent;
 
   const productPrice = document.querySelector(`.about-product-price`);
   productPrice.textContent = target.querySelector(".price").textContent;
+  selectedProductPrice = productPrice.textContent;
 }
 
 function confirmBuying() {
@@ -142,72 +180,56 @@ function confirmBuying() {
   buyForm.style.visibility = "visible";
 }
 
-const deliveryContainer = document.querySelector(`.delivery-container`);
-
 function capitalizeFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-function submitDelivery() {
-  deliveryContainer.style.display = `none`;
+function closeModal() {
+  modalContainer.style.display = `none`;
   hideBuyForm();
+  showCategories();
   resetProducts();
 }
 
-function renderDelivery(info) {
-  if (document.querySelector(`.delivery-message`)) {
-    document.querySelector(`.delivery-message`).remove();
+function showHistoryOrderDetails(event) {
+  const target = event.target.closest(`.prev-order-btn`);
+  const key = target.getAttribute("data-orderid");
+  const selectedOrder = JSON.parse(localStorage.getItem(key));
+  renderOrderDetails(selectedOrder);
+}
+
+function renderOrderDetails(info) {
+  modalContainer.style.display = `block`;
+
+  if ("product" in info) {
+    selectedProductName = info.product;
+    selectedProductPrice = info.price;
   }
-  deliveryContainer.style.display = `block`;
-  const deliveryMessage = document.createElement(`div`);
-  deliveryMessage.className = `delivery-message`;
-  deliveryContainer.appendChild(deliveryMessage);
 
-  deliveryContainer.style.display = `block`;
-  const productName = document.querySelector(`.about-product-name`).textContent;
-  const productPrice =
-    document.querySelector(`.about-product-price`).textContent;
-
-  const productField = document.createElement(`p`);
-  productField.className = `delivery-field`;
-  productField.textContent = `Product:`;
-  deliveryMessage.appendChild(productField);
-
-  const productValue = document.createElement(`p`);
-  productValue.className = `delivery-value`;
-  productValue.textContent = productName;
-  deliveryMessage.appendChild(productValue);
+  const modalProduct = modalMessage.querySelector(`.modal-product-value`);
+  modalProduct.textContent = selectedProductName;
 
   for (let key in info) {
-    const fieldName = document.createElement(`p`);
-    fieldName.className = `delivery-field`;
-    fieldName.textContent = `${capitalizeFirstLetter(key)}:`;
-
-    const fieldValue = document.createElement(`p`);
-    fieldValue.className = `delivery-value`;
-    fieldValue.textContent = capitalizeFirstLetter(info[key]);
-
-    deliveryMessage.appendChild(fieldName);
-    deliveryMessage.appendChild(fieldValue);
+    if (key == "time") continue;
+    const currentModalField = modalMessage.querySelector(`.modal-${key}-value`);
+    currentModalField.textContent = capitalizeFirstLetter(info[key]);
   }
 
-  const priceField = document.createElement(`p`);
-  priceField.className = `delivery-field`;
-  priceField.textContent = `Total price:`;
-  deliveryMessage.appendChild(priceField);
+  const commentBlock = modalMessage.querySelector(`.comment-block`);
 
-  const priceValue = document.createElement(`p`);
-  priceValue.className = `delivery-value`;
-  priceValue.textContent = `$${
-    parseFloat(productPrice.replace(/[^0-9.]/g, "")) * +info.amount
+  if (!("comment" in info)) {
+    commentBlock.style.display = `none`;
+  } else {
+    commentBlock.style.display = `block`;
+  }
+
+  const modalPrice = modalMessage.querySelector(`.modal-price-value`);
+  modalPrice.textContent = `$${
+    parseFloat(selectedProductPrice.replace(/[^0-9.]/g, "")) * +info.amount
   }`;
-  deliveryMessage.appendChild(priceValue);
 
-  const deliveryBtn = document.createElement(`button`);
-  deliveryBtn.className = `delivery-button`;
-  deliveryBtn.textContent = `OK`;
-  deliveryBtn.addEventListener(`click`, submitDelivery);
-  deliveryMessage.appendChild(deliveryBtn);
+  const modalBtn = document.querySelector(`.modal-button`);
+  modalBtn.addEventListener(`click`, closeModal);
 }
 
 function removeErrorMessage(event) {
@@ -228,7 +250,7 @@ function removeErrorMessage(event) {
 
 function submitForm(event) {
   event.preventDefault();
-  let userData = {};
+  let orderData = {};
   let formIsValid = true;
   const formData = new FormData(buyForm);
 
@@ -261,7 +283,7 @@ function submitForm(event) {
           continue;
         }
       } else {
-        userData[key] = formData.get(key);
+        orderData[key] = formData.get(key);
       }
     } else {
       if (!currentInputField.value.trim() && key !== "comment") {
@@ -278,14 +300,29 @@ function submitForm(event) {
           continue;
         }
       } else if (formData.get(key)) {
-        userData[key] = formData.get(key);
+        orderData[key] = formData.get(key);
       }
     }
   }
   if (!formIsValid) {
     alert("Complete the form!");
   } else {
-    renderDelivery(userData);
+    renderOrderDetails(orderData);
+
+    const currentTime = new Date();
+    const formattedDate = currentTime.toLocaleDateString("ru");
+    const formattedTime = currentTime.toLocaleTimeString("ru", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    const orderTime = `${formattedDate} ${formattedTime}`;
+
+    const key = +new Date();
+    orderData.product = selectedProductName;
+    orderData.price = selectedProductPrice;
+    orderData.time = orderTime;
+    localStorage.setItem(key, JSON.stringify(orderData));
+    renderPreviousOrders(localStorage.key(localStorage.length - 1));
   }
 }
 
