@@ -70,10 +70,15 @@ function renderCategoryButtons() {
   }
 }
 
-function renderPreviousOrders(orderKey = null) {
-  const keys = orderKey ? [orderKey] : Object.keys(localStorage);
+function renderPreviousOrders(orderKey) {
+  let ordersToRender;
+  if(orderKey) {
+    ordersToRender = [orderKey];
+  } else {
+    ordersToRender = Object.keys(localStorage);
+  }
 
-  for (const key of keys) {
+  for (const key of ordersToRender) {
     const prevOrder = JSON.parse(localStorage.getItem(key));
 
     const newLi = document.createElement("li");
@@ -322,7 +327,7 @@ function submitForm(event) {
     orderData.price = selectedProductPrice;
     orderData.time = orderTime;
     localStorage.setItem(key, JSON.stringify(orderData));
-    renderPreviousOrders(localStorage.key(localStorage.length - 1));
+    renderPreviousOrders(key);
   }
 }
 
