@@ -2,13 +2,13 @@ const testUsers = [
   {
     id: 1,
     username: "Andrew",
-    password: "qwerty123"
+    password: "qwerty123",
   },
   {
     id: 2,
     username: "Max",
-    password: "zxcqwe"
-  }
+    password: "zxcqwe",
+  },
 ];
 
 localStorage.setItem("users", JSON.stringify(testUsers));
@@ -35,45 +35,45 @@ declineBtn.addEventListener(`click`, () => {
 function renderUsersList(userToRender) {
   let usersData;
 
-  if(userToRender) {
+  if (userToRender) {
     usersData = [userToRender];
   } else {
     usersData = JSON.parse(localStorage.getItem(`users`));
   }
 
-  usersData.forEach(user => {
-      const userRowClone = rowTemplate.content.cloneNode(true);
-      const currentRow = userRowClone.querySelector(`tr`);
-      currentRow.setAttribute(`data-uuid`, user.id)
-  
-      const idField = userRowClone.querySelector(`.user-id`);
-      idField.textContent = user.id;
-  
-      const usernameField = userRowClone.querySelector(`.username`);
-      usernameField.textContent = user.username;
-  
-      const viewBtn = userRowClone.querySelector(`.view-btn`);
-      viewBtn.addEventListener(`click`, viewUser);
-  
-      const editBtn = userRowClone.querySelector(`.edit-btn`);
-      editBtn.addEventListener(`click`, editUserClick);
-  
-      const deleteBtn = userRowClone.querySelector(`.delete-btn`);
-      deleteBtn.addEventListener(`click`, deleteBtnClick);
-  
-      usersList.appendChild(userRowClone);
+  usersData.forEach((user) => {
+    const userRowClone = rowTemplate.content.cloneNode(true);
+    const currentRow = userRowClone.querySelector(`tr`);
+    currentRow.setAttribute(`data-uuid`, user.id);
+
+    const idField = userRowClone.querySelector(`.user-id`);
+    idField.textContent = user.id;
+
+    const usernameField = userRowClone.querySelector(`.username`);
+    usernameField.textContent = user.username;
+
+    const viewBtn = userRowClone.querySelector(`.view-btn`);
+    viewBtn.addEventListener(`click`, viewUser);
+
+    const editBtn = userRowClone.querySelector(`.edit-btn`);
+    editBtn.addEventListener(`click`, editUserClick);
+
+    const deleteBtn = userRowClone.querySelector(`.delete-btn`);
+    deleteBtn.addEventListener(`click`, deleteBtnClick);
+
+    usersList.appendChild(userRowClone);
   });
 }
 
 function updateExistingUser(editedUser) {
   const existingUsers = document.querySelectorAll(`.users-list tr`);
-  existingUsers.forEach(user => {
-    if(user.getAttribute(`data-uuid`) == editedUser.id) {
+  existingUsers.forEach((user) => {
+    if (user.getAttribute(`data-uuid`) == editedUser.id) {
       const username = user.querySelector(`.username`);
       username.textContent = editedUser.username;
       return;
     }
-  })
+  });
 }
 
 function deleteBtnClick(event) {
@@ -86,7 +86,7 @@ function deleteBtnClick(event) {
 }
 
 const acceptBtn = document.querySelector(`.accept-delete`);
-acceptBtn.addEventListener(`click`, confirmRemoving)
+acceptBtn.addEventListener(`click`, confirmRemoving);
 
 function confirmRemoving() {
   const idToDelete = deleteMessage.getAttribute(`data-deleteid`);
@@ -100,12 +100,12 @@ function confirmRemoving() {
     JSON.stringify(localStorageUsersWithoutDeleted)
   );
   const existingUsers = document.querySelectorAll(`.users-list tr`);
-  existingUsers.forEach(user => {
-    if(user.getAttribute(`data-uuid`) == idToDelete) {
+  existingUsers.forEach((user) => {
+    if (user.getAttribute(`data-uuid`) == idToDelete) {
       user.remove();
       return;
     }
-  })
+  });
   deleteMessage.style.display = `none`;
 }
 
@@ -115,11 +115,11 @@ function viewUser(event) {
   const rowUserId = currentRow.getAttribute(`data-uuid`);
 
   const existingUsersData = JSON.parse(localStorage.getItem(`users`));
-  existingUsersData.forEach(user => {
-    if(user.id == rowUserId) {
+  existingUsersData.forEach((user) => {
+    if (user.id == rowUserId) {
       alert(JSON.stringify(user));
     }
-  })
+  });
 }
 
 renderUsersList();
@@ -165,7 +165,8 @@ function throwErrorMessage(key, currentInputField) {
 hidePassword.addEventListener(`click`, (event) => {
   event.preventDefault();
   const eyeLine = document.querySelector(`.eye-line`);
-  eyeLine.style.stroke = eyeLine.style.stroke === `transparent` ? "currentColor" : "transparent";
+  eyeLine.style.stroke =
+    eyeLine.style.stroke === `transparent` ? "currentColor" : "transparent";
   passInput.type = passInput.type === "password" ? "text" : "password";
 });
 
@@ -188,30 +189,35 @@ function submitForm(event) {
         formIsValid = false;
         continue;
       }
-    }
-    else if (formData.get(key)) {
+    } else if (formData.get(key)) {
       inputData[key] = formData.get(key);
     }
   }
 
-  if(formIsValid){
-    if(modifyingForm.hasAttribute(`data-editid`)) {
+  if (formIsValid) {
+    if (modifyingForm.hasAttribute(`data-editid`)) {
       const uuid = modifyingForm.getAttribute(`data-editid`);
       inputData.id = uuid;
 
       const localStorageUsers = JSON.parse(localStorage.getItem("users"));
       const localStorageUsersWithEdited = localStorageUsers.map((element) => {
         if (element.id === +uuid) {
-          return { id: uuid, name: inputData.username, password: inputData.password };
+          return {
+            id: uuid,
+            name: inputData.username,
+            password: inputData.password,
+          };
         }
-    
+
         return element;
       });
-      localStorage.setItem("users", JSON.stringify(localStorageUsersWithEdited));
+      localStorage.setItem(
+        "users",
+        JSON.stringify(localStorageUsersWithEdited)
+      );
 
       updateExistingUser(inputData);
-    }
-    else {
+    } else {
       const uuid = +new Date();
       inputData.id = uuid;
       const usersFromLocalStorage = localStorage.getItem("users");
@@ -220,9 +226,19 @@ function submitForm(event) {
         usersFromLocalStorage
           ? JSON.stringify([
               ...JSON.parse(usersFromLocalStorage),
-              {  id: uuid, name: inputData.username, password: inputData.password },
+              {
+                id: uuid,
+                name: inputData.username,
+                password: inputData.password,
+              },
             ])
-          : JSON.stringify([{ id: uuid, name: inputData.username, password: inputData.password }])
+          : JSON.stringify([
+              {
+                id: uuid,
+                name: inputData.username,
+                password: inputData.password,
+              },
+            ])
       );
       renderUsersList(inputData);
     }
