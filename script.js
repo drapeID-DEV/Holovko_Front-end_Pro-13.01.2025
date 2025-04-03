@@ -61,6 +61,7 @@ function createPerson(event) {
   if (formIsValid) {
     const newPerson = new Person(personName, personAge);
     personList.push(newPerson);
+    alert(newPerson.personData);
 
     const newOwnerId = personList.length - 1;
     createNewOwnerOption(newPerson, newOwnerId);
