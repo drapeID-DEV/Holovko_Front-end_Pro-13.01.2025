@@ -19,7 +19,7 @@ function Person(name, age) {
   Object.defineProperty(this, `personData`, {
     get() {
       return `Fullname: ${this.name}, age: ${this.age}`;
-    }
+    },
   });
 }
 
@@ -36,13 +36,13 @@ function Car(model, color) {
     set(owner) {
       this.ownerName = owner.name;
       this.ownerAge = owner.age;
-    }
+    },
   });
 }
 
 function createNewOwnerOption(owner, ownerID) {
   const newOption = document.createElement(`option`);
-  newOption.setAttribute(`value`, ownerID)
+  newOption.setAttribute(`value`, ownerID);
   newOption.textContent = owner.name;
 
   ownerSelect.appendChild(newOption);
@@ -52,13 +52,13 @@ function createPerson(event) {
   event.preventDefault();
   const formData = new FormData(personForm);
   let formIsValid = true;
-  
+
   const personName = formData.get(`fullname`);
   const personAge = formData.get(`age`);
 
-  if(!personName || !personAge || !isFinite(personAge)) formIsValid = false;
+  if (!personName || !personAge || !isFinite(personAge)) formIsValid = false;
 
-  if(formIsValid) {
+  if (formIsValid) {
     const newPerson = new Person(personName, personAge);
     personList.push(newPerson);
 
@@ -75,14 +75,14 @@ function createCar(event) {
   event.preventDefault();
   const formData = new FormData(carForm);
   let formIsValid = true;
-  
+
   const carModel = formData.get(`model`);
   const carColor = formData.get(`color`);
   const carOwnerId = formData.get(`owner`);
 
-  if(!carModel || !carColor) formIsValid = false;
+  if (!carModel || !carColor) formIsValid = false;
 
-  if(formIsValid) {
+  if (formIsValid) {
     const newCar = new Car(carModel, carColor);
     newCar.ownerData = personList[carOwnerId];
     carList.push(newCar);
