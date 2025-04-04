@@ -26,16 +26,14 @@ function Person(name, age) {
 function Car(model, color) {
   this.model = model;
   this.color = color;
-  this.ownerName;
-  this.ownerAge;
+  this.owner = null;
 
-  Object.defineProperty(this, `ownerData`, {
+  Object.defineProperty(this, `carData`, {
     get() {
-      return `Car: ${this.color} ${this.model}, owner: ${this.ownerName}`;
+      return `Car: ${this.color} ${this.model}, owner: ${this.owner.personData}`;
     },
     set(owner) {
-      this.ownerName = owner.name;
-      this.ownerAge = owner.age;
+      this.owner = owner;
     },
   });
 }
@@ -88,7 +86,7 @@ function createCar(event) {
     newCar.ownerData = personList[carOwnerId];
     carList.push(newCar);
     carForm.reset();
-    alert(newCar.ownerData);
+    alert(newCar.carData);
   } else {
     alert(`Invalid data!`);
   }
