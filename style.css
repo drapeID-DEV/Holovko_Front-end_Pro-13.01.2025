@@ -1,0 +1,88 @@
+body {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h3 {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+label {
+    font-size: 20px;
+}
+
+input {
+    width: 250px;
+    height: 30px;
+    font-size: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    max-width: 200px;
+}
+
+.info-container {
+    display: flex;
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.info-modal {
+    text-align: center;
+    padding: 30px;
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    background-color: #FFF;
+    border-radius: 20px;
+    height: auto;
+    max-width: 300px;
+    width: 100%;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.info-text {
+    margin-top: 80px;
+}
+
+.action-btn {
+    border: 0;
+    width: 100px;
+    background-color: #24a3ff;
+    color: #FFF;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 25px;
+    font-weight: 700;
+    transition: all 0.3s linear;
+    margin-top: 20px;
+    &:hover {
+        background-color: #f0145a;
+        cursor: pointer;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+.error-message {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: red;
+}
