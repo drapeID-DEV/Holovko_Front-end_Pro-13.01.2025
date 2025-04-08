@@ -1,93 +1,32 @@
-const personForm = document.querySelector(`.person-form`);
-const carForm = document.querySelector(`.car-form`);
+function HTMLElement(tagName, attributes = {}, childElements = []) {
+  this.tagName = tagName;
+  this.attributes = attributes;
+  this.childElements = childElements;
 
-const personBtn = document.querySelector(`.create-person`);
-personBtn.addEventListener(`click`, createPerson);
+  this.createCustomElem = function () {
+    const element = document.createElement(this.tagName);
 
-const carBtn = document.querySelector(`.create-car`);
-carBtn.addEventListener(`click`, createCar);
+    for (let key in this.attributes) {
+      element.setAttribute(key, this.attributes[key]);
+    }
 
-const ownerSelect = document.querySelector(`#owner`);
+    this.childElements.forEach(child => {
+      if (typeof child === 'string') {
+        element.textContent = child;
+      } else {
+        element.appendChild(child.createCustomElem());
+      }
+    });
 
-let personList = [];
-let carList = [];
+    return element;
+  };
 
-function Person(name, age) {
-  this.name = name;
-  this.age = age;
-
-  Object.defineProperty(this, `personData`, {
-    get() {
-      return `Fullname: ${this.name}, age: ${this.age}`;
-    },
-  });
+  this.appendChild = function (element) {
+    this.childElements.push(element);
+  };
 }
 
-function Car(model, color) {
-  this.model = model;
-  this.color = color;
-  this.owner = null;
+const header = new HTMLElement('h1', { class: 'text', style: 'color: red' }, ['FRONT-END']);
+const textContainer = new HTMLElement('div', { class: 'container' }, [header]);
 
-  Object.defineProperty(this, `carData`, {
-    get() {
-      return `Car: ${this.color} ${this.model}, owner: ${this.owner.personData}`;
-    },
-    set(owner) {
-      this.owner = owner;
-    },
-  });
-}
-
-function createNewOwnerOption(owner, ownerID) {
-  const newOption = document.createElement(`option`);
-  newOption.setAttribute(`value`, ownerID);
-  newOption.textContent = owner.name;
-
-  ownerSelect.appendChild(newOption);
-}
-
-function createPerson(event) {
-  event.preventDefault();
-  const formData = new FormData(personForm);
-  let formIsValid = true;
-
-  const personName = formData.get(`fullname`);
-  const personAge = formData.get(`age`);
-
-  if (!personName || !personAge || !isFinite(personAge)) formIsValid = false;
-
-  if (formIsValid) {
-    const newPerson = new Person(personName, personAge);
-    personList.push(newPerson);
-    alert(newPerson.personData);
-
-    const newOwnerId = personList.length - 1;
-    createNewOwnerOption(newPerson, newOwnerId);
-    carBtn.disabled = false;
-    personForm.reset();
-  } else {
-    alert(`Invalid data!`);
-  }
-}
-
-function createCar(event) {
-  event.preventDefault();
-  const formData = new FormData(carForm);
-  let formIsValid = true;
-
-  const carModel = formData.get(`model`);
-  const carColor = formData.get(`color`);
-  const carOwnerId = formData.get(`owner`);
-
-  if (!carModel || !carColor) formIsValid = false;
-
-  if (formIsValid) {
-    const newCar = new Car(carModel, carColor);
-    newCar.ownerData = personList[carOwnerId];
-    carList.push(newCar);
-    carForm.reset();
-    alert(newCar.carData);
-  } else {
-    alert(`Invalid data!`);
-  }
-}
+document.body.appendChild(textContainer.createCustomElem());
