@@ -1,211 +1,67 @@
-const houseForm = document.querySelector(`.house-form`);
-const apartmentForm = document.querySelector(`.apartment-form`);
-const residentForm = document.querySelector(`.resident-form`);
+class Hamburger {
+  static SIZE_SMALL = {
+    price: 50,
+    calories: 20
+  };
+  static SIZE_LARGE = {
+    price: 100,
+    calories: 40
+  };
 
-const apartmentTitle = document.querySelector(`.apartment-number`);
-const residentTitle = document.querySelector(`.resident-number`);
+  static STUFFING_CHEESE = {
+    price: 10,
+    calories: 20
+  };
+  static STUFFING_SALAD = {
+    price: 20,
+    calories: 5
+  };
+  static STUFFING_POTATO = {
+    price: 15,
+    calories: 10
+  };
 
-const createHouseBtn = document.querySelector(`#house-btn`);
-createHouseBtn.addEventListener(`click`, createHouseHandler);
+  static TOPPING_MAYO = {
+    price: 20,
+    calories: 5
+  };
+  static TOPPING_SAUCE = {
+    price: 15,
+    calories: 0
+  };
 
-const createApartmentBtn = document.querySelector(`#apartment-btn`);
-createApartmentBtn.addEventListener(`click`, createApartmentHandler);
-
-const createResidentBtn = document.querySelector(`#residents-btn`);
-createResidentBtn.addEventListener(`click`, createResidentsHandler);
-
-const showInfoBtn = document.querySelector(`.show-info`);
-showInfoBtn.addEventListener(`click`, showInfoMessage);
-
-const infoContainer = document.querySelector(`.info-container`);
-const infoMessage = document.querySelector(`.info-text`);
-const infoBtn = document.querySelector(`.info-btn`);
-infoBtn.addEventListener(`click`, hideInfoMessage);
-
-const residentInputTemplate = document.querySelector(`.resident-input`)
-
-class House {
-  constructor() {
-    this.apartments = [];
+  constructor(size, stuffing) {
+    this.size = size;
+    this.stuffing = stuffing;
+    this.toppings = [];
   }
 
-  addApartment(apartment) {
-    this.apartments.push(apartment);
+  addTopping(topping) {
+    this.toppings.push(topping);
   }
 
-  getInfo() {
-    const list = document.createElement('ul');
-  
-    this.apartments.forEach((apartment, i) => {
-      const aptItem = document.createElement('li');
-      aptItem.textContent = `Квартира ${i + 1}:`;
-  
-      const residentList = document.createElement('ul');
-      apartment.residents.forEach((resident, j) => {
-        const residentItem = document.createElement('li');
-        residentItem.textContent = `Мешканець ${j + 1}: ${resident.name}`;
-        residentList.appendChild(residentItem);
-      });
-  
-      aptItem.appendChild(residentList);
-      list.appendChild(aptItem);
-    });
-  
-    return list;
+  calculatePrice() {
+    let total = this.size.price + this.stuffing.price;
+    this.toppings.forEach(topping => total += topping.price);
+    return total;
+  }
+
+  calculateCalories() {
+    let calories = this.size.calories + this.stuffing.calories;
+    this.toppings.forEach(topping => calories += topping.calories);
+    return calories;
   }
 }
 
-class Apartment {
-  constructor() {
-    this.residents = [];
-  }
-
-  addResident(resident) {
-    this.residents.push(resident);
-  }
-}
-
-class Resident {
-  constructor(name) {
-    this.name = name;
-  }
-}
-
-let house = new House();
-let totalApartments = 0;
-let currentApartment = 0;
-let residentAmount = 0;
-
-function showElement(element) {
-  element.classList.remove(`hidden`);
-}
-
-function hideElement(element) {
-  element.classList.add(`hidden`);
-}
-
-function removeErrorMessage() {
-  const prevErrorMessage = document.querySelector(
-    `#${this.id} + .error-message`
-  );
-  if (prevErrorMessage) {
-    prevErrorMessage.remove();
-  }
-}
-
-function throwErrorMessage(key, currentInputField) {
-  const errorMessage = document.createElement(`p`);
-  errorMessage.className = `error-message`;
-  errorMessage.textContent = `Please input ${key}*`;
-  currentInputField.insertAdjacentElement("afterend", errorMessage);
-  currentInputField.addEventListener(`focus`, removeErrorMessage);
-}
-
-function validateForm(formData) {
-  let formState = true;
-
-  for (let key of formData.keys()) {
-    const currentInputField = document.querySelector(`#${key}`);
-    const prevErrorMessage = document.querySelector(`#${key} + .error-message`);
-
-    if (!currentInputField.value.trim()) {
-      if (!prevErrorMessage) {
-        throwErrorMessage(key, currentInputField);
-        formState = false;
-        continue;
-      } else {
-        formState = false;
-        continue;
-      }
-    }
-  }
-  return formState;
-}
-
-function createHouseHandler(event) {
-  event.preventDefault();
-
-  const formData = new FormData(houseForm);
-  let formIsValid = validateForm(formData);
-
-  if (formIsValid) {
-    totalApartments = formData.get(`apartment-amount`);
-    apartmentTitle.textContent = `Apartment ${currentApartment + 1}`;
-    showElement(apartmentForm);
-    hideElement(houseForm);
-  }
-}
-
-function createApartmentHandler(event) {
-  event.preventDefault();
-
-  const formData = new FormData(apartmentForm);
-  let formIsValid = validateForm(formData);
-
-  if (formIsValid) {
-    residentAmount = formData.get(`resident-amount`);
-    apartmentForm.reset();
-    hideElement(apartmentForm);
-    renderResidentInputs(residentAmount);
-    showElement(residentForm);
-  }
-}
-
-function createResidentsHandler(event) {
-  event.preventDefault();
-
-  const apartment = new Apartment();
-
-  const formData = new FormData(residentForm);
-  let formIsValid = validateForm(formData);
-
-  if (formIsValid) {
-    for (let key of formData.keys()) {
-      apartment.addResident(new Resident(formData.get(key)));
-    }
-
-    house.addApartment(apartment);
-    currentApartment++;
-
-    if (currentApartment < totalApartments) {
-      residentForm.reset();
-      apartmentTitle.textContent = `Apartment ${currentApartment + 1}`;
-      const residentInputs = document.querySelectorAll(`.input-resident-block`);
-      residentInputs.forEach(element => element.remove());
-      hideElement(residentForm);
-      showElement(apartmentForm);
-    } else {
-      hideElement(residentForm);
-      showElement(showInfoBtn);
-    }
-  }
-}
-
-function renderResidentInputs(amount) {
-  for(let i = 1; i <= amount; i++) {
-    const residentInputClone = residentInputTemplate.content.cloneNode(true);
-
-    const residentBlock = residentInputClone.querySelector(`div`);
-    residentBlock.className = `input-resident-block`;
-
-    const label = residentInputClone.querySelector(`label`);
-    label.setAttribute(`for`, `resident-${i}`);
-    label.textContent = `Resident ${i}`
-  
-    const input = residentInputClone.querySelector(`input`);
-    input.setAttribute(`id`, `resident-${i}`);
-    input.setAttribute(`name`, `resident-${i}`);
-
-    residentForm.insertBefore(residentInputClone, createResidentBtn);
-  }
-}
-
-function hideInfoMessage() {
-  hideElement(infoContainer);
-}
-
-function showInfoMessage() {
-  const houseInfo = house.getInfo();
-  infoMessage.appendChild(houseInfo);
-  showElement(infoContainer);
-}
+// маленький гамбургер із начинкою із сиру
+const hamburger =  new Hamburger (Hamburger.SIZE_SMALL, Hamburger.STUFFING_CHEESE);
+// Добавка з майонезу
+hamburger.addTopping(Hamburger.TOPPING_MAYO);
+// Запитаємо скільки там калорій
+console.log("Calories: " + hamburger.calculateCalories());
+// скільки коштує
+console.log("Price: " + hamburger.calculatePrice());
+// я тут передумав і вирішив додати ще приправу
+hamburger.addTopping(Hamburger.TOPPING_SAUCE);
+// А скільки тепер коштує?
+console.log("Price with sauce: " + hamburger.calculatePrice());
