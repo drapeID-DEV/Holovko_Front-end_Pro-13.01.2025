@@ -1,67 +1,89 @@
-class Hamburger {
-  static SIZE_SMALL = {
-    price: 50,
-    calories: 20
-  };
-  static SIZE_LARGE = {
-    price: 100,
-    calories: 40
-  };
-
-  static STUFFING_CHEESE = {
-    price: 10,
-    calories: 20
-  };
-  static STUFFING_SALAD = {
-    price: 20,
-    calories: 5
-  };
-  static STUFFING_POTATO = {
-    price: 15,
-    calories: 10
-  };
-
-  static TOPPING_MAYO = {
-    price: 20,
-    calories: 5
-  };
-  static TOPPING_SAUCE = {
-    price: 15,
-    calories: 0
-  };
-
-  constructor(size, stuffing) {
-    this.size = size;
-    this.stuffing = stuffing;
-    this.toppings = [];
+class Student {
+  constructor(firstName, lastName, birthYear, grades) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.birthYear = birthYear;
+    this.grades = grades;
+    this.journal = new Array(25);
   }
 
-  addTopping(topping) {
-    this.toppings.push(topping);
+  getName() {
+    return `${this.firstName} ${this.lastName}`;
   }
 
-  calculatePrice() {
-    let total = this.size.price + this.stuffing.price;
-    this.toppings.forEach(topping => total += topping.price);
-    return total;
+  getAge() {
+    const currentYear = new Date().getFullYear();
+    return currentYear - this.birthYear;
   }
 
-  calculateCalories() {
-    let calories = this.size.calories + this.stuffing.calories;
-    this.toppings.forEach(topping => calories += topping.calories);
-    return calories;
+  getAverageGrade() {
+    const sum = this.grades.reduce(
+      (accumulator, grade) => accumulator + grade,
+      0
+    );
+    return sum / this.grades.length;
+  }
+
+  setVisit(value) {
+    const currentVisit = this.journal.findIndex(
+      (element) => element == undefined
+    );
+    if (currentVisit !== -1) {
+      this.journal[currentVisit] = value;
+    } else {
+      console.log(`There is no empty place!`);
+    }
+  }
+
+  present() {
+    this.setVisit(true);
+  }
+
+  absent() {
+    this.setVisit(false);
+  }
+
+  getAverageVisits() {
+    let visited = 0;
+    this.journal.forEach((element) => {
+      if (element == true) visited++;
+    });
+    return visited / this.journal.length;
+  }
+
+  summary() {
+    const avgGrade = this.getAverageGrade();
+    const avgVisits = this.getAverageVisits();
+
+    if (avgGrade > 90 && avgVisits > 0.9) {
+      return "Молодець!";
+    } else if (avgGrade > 90 || avgVisits > 0.9) {
+      return "Добре, але можна краще";
+    } else {
+      return "Редиска!";
+    }
   }
 }
 
-// маленький гамбургер із начинкою із сиру
-const hamburger =  new Hamburger (Hamburger.SIZE_SMALL, Hamburger.STUFFING_CHEESE);
-// Добавка з майонезу
-hamburger.addTopping(Hamburger.TOPPING_MAYO);
-// Запитаємо скільки там калорій
-console.log("Calories: " + hamburger.calculateCalories());
-// скільки коштує
-console.log("Price: " + hamburger.calculatePrice());
-// я тут передумав і вирішив додати ще приправу
-hamburger.addTopping(Hamburger.TOPPING_SAUCE);
-// А скільки тепер коштує?
-console.log("Price with sauce: " + hamburger.calculatePrice());
+const student1 = new Student("Андрій", "Головко", 2005, [98, 90, 87, 95]);
+for (let i = 0; i < 20; i++) {
+  student1.present();
+}
+for (let i = 0; i < 5; i++) {
+  student1.absent();
+}
+
+const student2 = new Student("Максим", "Проценко", 2004, [52, 60, 65, 70]);
+for (let i = 0; i < 10; i++) {
+  student2.present();
+}
+for (let i = 0; i < 15; i++) {
+  student2.absent();
+}
+
+console.log(
+  `${student1.getName()}\nВік: ${student1.getAge()}\nРезультат:${student1.summary()}\n`
+);
+console.log(
+  `${student2.getName()}\nВік: ${student2.getAge()}\nРезультат:${student2.summary()}`
+);
