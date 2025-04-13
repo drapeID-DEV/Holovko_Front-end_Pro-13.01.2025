@@ -1,4 +1,4 @@
-const digitImgs = Array.from(document.querySelectorAll('img'));
+const digitImgs = document.querySelectorAll('img');
 let prevDigits = [];
 
 function getCurrentTime() {
@@ -10,12 +10,12 @@ function getCurrentTime() {
 function updateClock() {
   const currentTime = getCurrentTime();
 
-  for (let i = 0; i < digitImgs.length; i++) {
-    if (prevDigits[i] !== currentTime[i]) {
-		digitImgs[i].src = `images/${currentTime[i]}.png`;
-		prevDigits[i] = currentTime[i];
+  digitImgs.forEach((digit, index) => {
+    if (prevDigits[index] !== currentTime[index]) {
+      digit.src = `images/${currentTime[index]}.png`;
+      prevDigits[index] = currentTime[index];
     }
-  }
+  })
 }
 
 updateClock();
