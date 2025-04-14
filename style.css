@@ -1,0 +1,111 @@
+body {
+    margin: 0 auto;
+    max-width: 1600px;
+    width: 100%;
+}
+
+
+.team_slider {
+    display: flex;
+    max-width: 100%;
+    width: 100%;
+}
+
+.slide {
+    display: none;
+}
+
+.active-slide {
+    display: flex;
+    min-height: 290px;
+    max-width: 100%;
+    width: 100%;
+}
+
+.slider-btn {
+    color: #FFF;
+    background-color: #24a3ff;
+    font-size: 20px;
+    font-weight: 700;
+    transition: all 0.3s linear;
+    width: 200px;
+    height: 40px;
+    border-radius: 10px;
+    &:hover {
+        cursor: pointer;
+        background-color: #f0145a;
+    }
+}
+
+.page_link {
+    align-items: center;
+    color: #24a3ff;
+    display: flex;
+    font-size: 14px;
+    font-weight: 700;
+    gap: 2px;
+    justify-content: space-between;
+    letter-spacing: 1px;
+    line-height: 17.07px;
+    text-transform: uppercase;
+    transition: all 0.3s linear;
+    width: -moz-max-content;
+    width: max-content;
+}
+.page_link:hover {
+    color: #f0145a;
+}
+.team_page_link {
+    margin-bottom: 5px;
+}
+.face_image {
+    background-position: 50%;
+    background-size: cover;
+    border-radius: 12px 0 0 12px;
+    height: auto;
+    width: 400px;
+}
+.team_info {
+    width: 100%;
+    background-color: #f5f5fa;
+    border-radius: 0 12px 12px 0;
+    padding: 30px;
+}
+.team_text {
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-image: linear-gradient(90.13deg, #f0145a 0.84%, #ef8080 99.96%);
+    color: transparent;
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 46.32px;
+    margin-bottom: 30px;
+    max-width: 1140px;
+}
+.team_member {
+    color: #b3b3ba;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19.5px;
+    margin-bottom: 5px;
+}
+.member_position {
+    color: #b3b3ba;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+}
+
+.slider_controls {
+    align-items: center;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.slider_button:hover {
+    background-color: #24a3ff;
+    cursor: pointer;
+}

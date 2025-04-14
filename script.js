@@ -1,22 +1,59 @@
-const digitImgs = document.querySelectorAll('img');
-let prevDigits = [];
+const prevBtn = document.querySelector(`.prev-slide-btn`);
+const nextBtn = document.querySelector(`.next-slide-btn`);
+const sliderContainer = document.querySelector(`.slider-container`);
+const slideList = document.querySelectorAll(`.slide`);
+const slideImages = document.querySelectorAll(`.face_image`);
 
-function getCurrentTime() {
-  const now = new Date();
-  const formattedTime = now.toTimeString().slice(0, 8);
-  return formattedTime.match(/\d/g);
+let autoPlay;
+
+function startAutoplay() {
+  autoPlay = setInterval(function () {
+    nextBtn.click();
+  }, 3000);
 }
 
-function updateClock() {
-  const currentTime = getCurrentTime();
+startAutoplay();
 
-  digitImgs.forEach((digit, index) => {
-    if (prevDigits[index] !== currentTime[index]) {
-      digit.src = `images/${currentTime[index]}.png`;
-      prevDigits[index] = currentTime[index];
-    }
-  })
+function stopAutoplay() {
+  clearInterval(autoPlay);
 }
 
-updateClock();
-setInterval(updateClock, 1000);
+sliderContainer.addEventListener(`mouseout`, startAutoplay);
+sliderContainer.addEventListener(`mouseover`, stopAutoplay);
+
+slideImages.forEach((element, index) => {
+  element.style.backgroundImage = `url("./images/Team-${index + 1}.png")`;
+});
+
+let index = 0;
+
+prevBtn.addEventListener("click", goPrev);
+nextBtn.addEventListener("click", goNext);
+
+function update() {
+  slideList.forEach((element, i) => {
+    element.classList.toggle("active-slide", i == index);
+  });
+}
+
+function goNext() {
+  if (index < slideList.length - 1) {
+    index++;
+    update();
+  } else {
+    index = 0;
+    update();
+  }
+}
+
+function goPrev() {
+  if (index > 0) {
+    index--;
+    update();
+  } else {
+    index = slideList.length - 1;
+    update();
+  }
+}
+
+update();
