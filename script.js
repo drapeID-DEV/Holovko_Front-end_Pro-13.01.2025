@@ -22,6 +22,19 @@ function createResponseMessage(text) {
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
+function endChat() {
+  createResponseMessage("Have a good day!");
+  inputContainer.innerHTML = "Chat has ended!";
+}
+
+function randomEnding() {
+  if(Math.floor(Math.random() * 2) == 0){
+    return true;
+  }
+}
+
+console.log(Math.floor(Math.random() * 2))
+
 async function getResponse() {
   let response = await fetch("https://jsonplaceholder.typicode.com/todos/");
   const data = await response.json();
@@ -36,12 +49,17 @@ function sendMessage() {
   if (messageInput.value == "My watch has ended") {
     createYourMessage(messageInput.value);
     messageInput.value = "";
-    createResponseMessage("Have a good day!");
-    inputContainer.innerHTML = "Chat has ended!";
+    endChat();
     return;
   }
 
   createYourMessage(messageInput.value);
   messageInput.value = "";
+
+  if(randomEnding()) {
+    endChat();
+    return;
+  }
+  
   getResponse();
 }
