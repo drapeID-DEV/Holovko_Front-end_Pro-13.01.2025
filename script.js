@@ -9,6 +9,7 @@ function createYourMessage(text) {
   message.classList.add("text-message", "your-message");
   message.textContent = text;
   messagesContainer.appendChild(message);
+  messageInput.value = "";
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
@@ -48,13 +49,11 @@ function sendMessage() {
 
   if (messageInput.value == "My watch has ended") {
     createYourMessage(messageInput.value);
-    messageInput.value = "";
     endChat();
     return;
   }
 
   createYourMessage(messageInput.value);
-  messageInput.value = "";
 
   if(randomEnding()) {
     endChat();
