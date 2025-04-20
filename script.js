@@ -4,10 +4,10 @@ const messageInput = document.querySelector(`#message-input`);
 const sendButton = document.querySelector(`.send-message`);
 sendButton.addEventListener("click", sendMessage);
 
-function createYourMessage(text) {
+function createYourMessage() {
   const message = document.createElement("div");
   message.classList.add("text-message", "your-message");
-  message.textContent = text;
+  message.textContent = messageInput.value;
   messagesContainer.appendChild(message);
   messageInput.value = "";
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -48,12 +48,12 @@ function sendMessage() {
   if (!messageInput.value) return;
 
   if (messageInput.value == "My watch has ended") {
-    createYourMessage(messageInput.value);
+    createYourMessage();
     endChat();
     return;
   }
 
-  createYourMessage(messageInput.value);
+  createYourMessage();
 
   if(randomEnding()) {
     endChat();
