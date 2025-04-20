@@ -1,59 +1,48 @@
-const prevBtn = document.querySelector(`.prev-slide-btn`);
-const nextBtn = document.querySelector(`.next-slide-btn`);
-const sliderContainer = document.querySelector(`.slider-container`);
-const slideList = document.querySelectorAll(`.slide`);
-const slideImages = document.querySelectorAll(`.face_image`);
+const messagesContainer = document.querySelector(`.messages-container`);
+const messageInput = document.querySelector(`#message-input`);
+const sendButton = document.querySelector(`.send-message`);
+sendButton.addEventListener("click", sendMessage);
 
-let autoPlay;
-
-function startAutoplay() {
-  autoPlay = setInterval(function () {
-    nextBtn.click();
-  }, 3000);
+function createYourMessage(text) {
+  const message = document.createElement("div");
+  message.classList.add("text-message", "your-message");
+  message.textContent = text;
+  messagesContainer.appendChild(message);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
-startAutoplay();
-
-function stopAutoplay() {
-  clearInterval(autoPlay);
+function createResponseMessage(text) {
+  const response = document.createElement("div");
+  response.classList.add("text-message", "companion-message");
+  response.textContent = text;
+  messagesContainer.appendChild(response);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
-sliderContainer.addEventListener(`mouseout`, startAutoplay);
-sliderContainer.addEventListener(`mouseover`, stopAutoplay);
+async function getResponse() {
+  let response = await fetch("https://jsonplaceholder.typicode.com/todos/");
+  const data = await response.json();
 
-slideImages.forEach((element, index) => {
-  element.style.backgroundImage = `url("./images/Team-${index + 1}.png")`;
-});
-
-let index = 0;
-
-prevBtn.addEventListener("click", goPrev);
-nextBtn.addEventListener("click", goNext);
-
-function update() {
-  slideList.forEach((element, i) => {
-    element.classList.toggle("active-slide", i == index);
-  });
+  const responseText = data[Math.floor(Math.random() * data.length)].title;
+  createResponseMessage(responseText);
 }
 
-function goNext() {
-  if (index < slideList.length - 1) {
-    index++;
-    update();
-  } else {
-    index = 0;
-    update();
+function sendMessage() {
+  if (!messageInput.value) return;
+
+  if (messageInput.value == "My watch has ended") {
+    createYourMessage(messageInput.value);
+    messageInput.value = "";
+    setTimeout(() => {
+      createResponseMessage("Have a good day!");
+    }, "2000");
+    sendButton.disabled = true;
+    return;
   }
-}
 
-function goPrev() {
-  if (index > 0) {
-    index--;
-    update();
-  } else {
-    index = slideList.length - 1;
-    update();
-  }
+  createYourMessage(messageInput.value);
+  messageInput.value = "";
+  setTimeout(() => {
+    getResponse();
+  }, "2000");
 }
-
-update();

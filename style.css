@@ -1,111 +1,89 @@
 body {
-    margin: 0 auto;
-    max-width: 1600px;
-    width: 100%;
-}
-
-
-.team_slider {
+    margin: 0;
+    padding: 0;
     display: flex;
-    max-width: 100%;
-    width: 100%;
+    justify-content: center;
 }
 
-.slide {
+.chat-container {
+    height: 100vh;
+    width: 600px;
+    background-color: rgb(5, 5, 32);
+}
+
+.messages-viewport {
+    height: calc(100% - 80px);
+    padding: 0 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.messages-container {
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: fit-content;
+    margin-top: auto;
+    margin-bottom: 20px;
+}
+
+.messages-container::-webkit-scrollbar {
     display: none;
 }
 
-.active-slide {
+.input-container {
     display: flex;
-    min-height: 290px;
-    max-width: 100%;
+    gap: 40px;
+    bottom: 0;
+    height: 40px;
+    width: 100%;
+    background-color: rgb(70, 70, 70);
+    padding: 20px 0;
+}
+
+#message-input {
+    font-size: 20px;
+    margin: 0;
+    margin-left: 40px;
+    padding: 0;
+    border: 0;
+    color: #FFF;
+    background-color: black;
+    padding: 15px;
+    border-radius: 20px;
     width: 100%;
 }
 
-.slider-btn {
+.send-message {
+    display: flex;
+    padding: 10px;
+    border: 0;
+    border-radius: 50%;
+    margin-right: 40px;
     color: #FFF;
-    background-color: #24a3ff;
-    font-size: 20px;
-    font-weight: 700;
+    background-color: blueviolet;
     transition: all 0.3s linear;
-    width: 200px;
-    height: 40px;
-    border-radius: 10px;
     &:hover {
         cursor: pointer;
-        background-color: #f0145a;
+        background-color: rgb(96, 29, 158);
     }
 }
 
-.page_link {
-    align-items: center;
-    color: #24a3ff;
-    display: flex;
-    font-size: 14px;
-    font-weight: 700;
-    gap: 2px;
-    justify-content: space-between;
-    letter-spacing: 1px;
-    line-height: 17.07px;
-    text-transform: uppercase;
-    transition: all 0.3s linear;
-    width: -moz-max-content;
-    width: max-content;
-}
-.page_link:hover {
-    color: #f0145a;
-}
-.team_page_link {
-    margin-bottom: 5px;
-}
-.face_image {
-    background-position: 50%;
-    background-size: cover;
-    border-radius: 12px 0 0 12px;
-    height: auto;
-    width: 400px;
-}
-.team_info {
-    width: 100%;
-    background-color: #f5f5fa;
-    border-radius: 0 12px 12px 0;
-    padding: 30px;
-}
-.team_text {
-    -webkit-background-clip: text;
-    background-clip: text;
-    background-image: linear-gradient(90.13deg, #f0145a 0.84%, #ef8080 99.96%);
-    color: transparent;
-    font-size: 38px;
-    font-weight: 700;
-    line-height: 46.32px;
-    margin-bottom: 30px;
-    max-width: 1140px;
-}
-.team_member {
-    color: #b3b3ba;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 19.5px;
-    margin-bottom: 5px;
-}
-.member_position {
-    color: #b3b3ba;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 22px;
+.text-message {
+    font-size: 20px;
+ padding: 10px 20px;
+ border-radius: 20px;
+ color: #FFF;
+ max-width: 300px;
+ width: fit-content;
 }
 
-.slider_controls {
-    align-items: center;
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    width: 100%;
-    margin: 20px 0;
+.your-message {
+    background-color: blueviolet;
+    margin-left: auto;
 }
 
-.slider_button:hover {
-    background-color: #24a3ff;
-    cursor: pointer;
+.companion-message {
+    background-color: rgb(70, 12, 124);
 }
