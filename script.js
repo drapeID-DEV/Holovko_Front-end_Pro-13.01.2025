@@ -1,4 +1,5 @@
 const messagesContainer = document.querySelector(`.messages-container`);
+const inputContainer = document.querySelector(`.input-container`);
 const messageInput = document.querySelector(`#message-input`);
 const sendButton = document.querySelector(`.send-message`);
 sendButton.addEventListener("click", sendMessage);
@@ -15,7 +16,9 @@ function createResponseMessage(text) {
   const response = document.createElement("div");
   response.classList.add("text-message", "companion-message");
   response.textContent = text;
-  messagesContainer.appendChild(response);
+  setTimeout(() => {
+    messagesContainer.appendChild(response);
+  }, "2000");
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
@@ -33,16 +36,12 @@ function sendMessage() {
   if (messageInput.value == "My watch has ended") {
     createYourMessage(messageInput.value);
     messageInput.value = "";
-    setTimeout(() => {
-      createResponseMessage("Have a good day!");
-    }, "2000");
-    sendButton.disabled = true;
+    createResponseMessage("Have a good day!");
+    inputContainer.innerHTML = "Chat has ended!";
     return;
   }
 
   createYourMessage(messageInput.value);
   messageInput.value = "";
-  setTimeout(() => {
-    getResponse();
-  }, "2000");
+  getResponse();
 }

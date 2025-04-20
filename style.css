@@ -34,6 +34,9 @@ body {
 
 .input-container {
     display: flex;
+    justify-content: center;
+    font-size: 30px;
+    color: #FFF;
     gap: 40px;
     bottom: 0;
     height: 40px;
