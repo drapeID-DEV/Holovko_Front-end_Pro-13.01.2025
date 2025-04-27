@@ -2,29 +2,84 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css" />
     <title>Document</title>
 </head>
 
 <body>
-    <div class="chat-container">
-        <div class="messages-viewport">
-            <div class="messages-container">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-toggle="tooltip" title="Open modal"
+        data-bs-target="#staticBackdrop">
+        Launch demo modal
+    </button>
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                        Modal title
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">Some data</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                </div>
             </div>
         </div>
-        <div class="input-container">
-            <input type="text" placeholder="Message" id="message-input">
-            <button class="send-message"><svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision"
-                    text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd"
-                    clip-rule="evenodd" viewBox="0 0 511 512.32">
-                    <path fill="#fff"
-                        d="M9.72 185.88L489.19 1.53c3.64-1.76 7.96-2.08 12.03-.53 7.83 2.98 11.76 11.74 8.78 19.57L326.47 502.56h-.02c-1.33 3.49-3.94 6.5-7.57 8.25-7.54 3.63-16.6.47-20.23-7.06l-73.78-152.97 146.67-209.97-209.56 146.3L8.6 213.64a15.117 15.117 0 01-7.6-8.25c-2.98-7.79.93-16.53 8.72-19.51z" />
-                </svg></button>
-        </div>
     </div>
-    <script src="./script.js"></script>
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#alert-container"
+        aria-controls="alert-container">
+        my birthday
+    </button>
+    <div class="collapse" id="alert-container">
+        <div class="alert alert-success"></div>
+    </div>
+    <div class="w-25">
+        <label for="birthday-input" class="birthday-label">Input your birthday:</label>
+        <input type="text" id="birthday-input">
+        <button class="convert-date btn btn-primary">Convert</button>
+    </div>
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./node_modules/moment/min/moment.min.js"></script>
+    <script src="./node_modules/moment/locale/uk.js"></script>
+    <script>
+        const alertContainer = document.querySelector(`.alert`);
+        const birthday = moment('2005-04-28');
+        alertContainer.textContent = birthday.format('D MMMM YY');
+
+        const birthdayInput = document.querySelector(`#birthday-input`);
+        const convertBtn = document.querySelector(`.convert-date`);
+        convertBtn.addEventListener('click', convertDateHandler)
+
+        const appendAlert = (message, type) => {
+            const wrapper = document.createElement('div')
+            wrapper.innerHTML = [
+                `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+                `   <div>${message}</div>`,
+                '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                '</div>'
+            ].join('')
+
+            document.body.appendChild(wrapper)
+        }
+
+        function convertDateHandler() {
+            const userBirthday = birthdayInput.value;
+            console.log(userBirthday)
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(userBirthday)) {
+                appendAlert('Invalid format, try: YYYY-MM-DD', 'danger')
+                return;
+            }
+            appendAlert(moment(userBirthday).format('D MMMM YY'), 'success')
+
+        }
+    </script>
 </body>
 
 </html>
