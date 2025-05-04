@@ -2,11 +2,10 @@
   "name": "front",
   "version": "1.0.0",
   "description": "",
-  "main": "script.js",
+  "main": "index.js",
   "scripts": {
-    "build": "gulp",
-    "build:js": "gulp js",
-    "build:scss": "gulp scss",
+    "build": "webpack",
+    "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,13 +20,20 @@
   },
   "homepage": "https://github.com/drapeID-DEV/Holovko_Front-end_Pro-13.01.2025#readme",
   "devDependencies": {
-    "@babel/core": "^7.26.10",
-    "@babel/preset-env": "^7.26.9",
-    "gulp": "^5.0.0",
-    "gulp-babel": "^8.0.0",
-    "gulp-clean-css": "^4.3.0",
-    "gulp-minify": "^3.1.0",
-    "gulp-sass": "^6.0.1",
-    "sass": "^1.87.0"
+    "autoprefixer": "^10.4.21",
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.6.3",
+    "nodemon": "^3.1.10",
+    "postcss-loader": "^8.1.1",
+    "sass": "^1.87.0",
+    "sass-loader": "^16.0.5",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.99.7",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.5",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
   }
 }

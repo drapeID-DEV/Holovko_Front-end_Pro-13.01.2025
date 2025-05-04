@@ -1,92 +1,15 @@
-body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
+@import "~bootstrap/scss/bootstrap";
+
+#product-cards-container {
+    grid-template-columns: 1fr 1fr 1fr;
 }
 
-.chat-container {
-    height: 100vh;
-    width: 600px;
-    background-color: rgb(5, 5, 32);
-}
-
-.messages-viewport {
-    height: calc(100% - 80px);
-    padding: 0 30px;
-    display: flex;
-    flex-direction: column;
-}
-
-.messages-container {
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    height: fit-content;
-    margin-top: auto;
-    margin-bottom: 20px;
-}
-
-.messages-container::-webkit-scrollbar {
-    display: none;
-}
-
-.input-container {
-    display: flex;
-    justify-content: center;
-    font-size: 30px;
-    color: #FFF;
-    gap: 40px;
-    bottom: 0;
-    height: 40px;
-    width: 100%;
-    background-color: rgb(70, 70, 70);
-    padding: 20px 0;
-}
-
-#message-input {
-    font-size: 20px;
-    margin: 0;
-    margin-left: 40px;
-    padding: 0;
-    border: 0;
-    color: #FFF;
-    background-color: black;
-    padding: 15px;
-    border-radius: 20px;
-    width: 100%;
-}
-
-.send-message {
-    display: flex;
-    padding: 10px;
-    border: 0;
-    border-radius: 50%;
-    margin-right: 40px;
-    color: #FFF;
-    background-color: blueviolet;
-    transition: all 0.3s linear;
+#product-card {
     &:hover {
         cursor: pointer;
-        background-color: rgb(96, 29, 158);
+        #product-image {
+            transition: all 0.2s linear;
+            transform: scale(1.1);
+        }
     }
-}
-
-.text-message {
-    font-size: 20px;
- padding: 10px 20px;
- border-radius: 20px;
- color: #FFF;
- max-width: 300px;
- width: fit-content;
-}
-
-.your-message {
-    background-color: blueviolet;
-    margin-left: auto;
-}
-
-.companion-message {
-    background-color: rgb(70, 12, 124);
 }
