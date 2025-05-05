@@ -9,5 +9,5 @@ export function showElement(element) {
 const totalOrderPrice = document.querySelector(`#order-price`);
 
 export function updateOrderPrice(newPrice) {
-  totalOrderPrice.textContent = `Your order total is: ${newPrice}UAH`
+  totalOrderPrice.textContent = `Your order total is: ${newPrice}UAH`;
 }

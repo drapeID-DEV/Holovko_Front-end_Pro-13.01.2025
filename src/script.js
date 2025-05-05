@@ -2,15 +2,13 @@ import "./style.scss";
 import { hideElement, showElement, updateOrderPrice } from "./utils";
 import Product from "./productClass";
 
-
 async function getCatalog() {
   try {
-    const response = await fetch('http://localhost:3000/catalog');
+    const response = await fetch("http://localhost:3000/catalog");
     const data = await response.json();
     return data;
-
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
   }
 }
 
@@ -38,7 +36,7 @@ const productTemplate = document.querySelector(`.product-card-template`);
 
 function renderAllProducts() {
   for (const category in catalog) {
-    catalog[category].forEach(product => {
+    catalog[category].forEach((product) => {
       const productClone = productTemplate.content.cloneNode(true);
       const productCard = productClone.querySelector("#product-card");
       productCard.setAttribute(`data-Id`, product.id);
@@ -62,7 +60,7 @@ renderAllProducts();
 const products = document.querySelectorAll(`#product-card`);
 
 function resetProducts() {
-  products.forEach(product => hideElement(product));
+  products.forEach((product) => hideElement(product));
 }
 
 function showCategoryProducts(event) {
@@ -71,7 +69,7 @@ function showCategoryProducts(event) {
   resetProducts();
 
   catalog[category].forEach((categoryProduct) => {
-    products.forEach(product => {
+    products.forEach((product) => {
       const productId = +product.getAttribute(`data-id`);
       if (categoryProduct.id == productId) showElement(product);
     });
@@ -85,7 +83,7 @@ const toppingsContainer = document.querySelector(`#toppings-container`);
 
 let currentItem;
 let order = {
-  total: 0
+  total: 0,
 };
 
 function getProductData(idToFind) {
@@ -106,12 +104,12 @@ function openConstructor(event) {
   const constructName = constructorContainer.querySelector(`#constructor-name`);
   constructName.textContent = currentItem.name;
 
-  const constructImage = constructorContainer.querySelector(`#constructor-image`);
+  const constructImage =
+    constructorContainer.querySelector(`#constructor-image`);
   constructImage.src = currentItem.imageSource;
-  if(currentItem.category == `Drinks`) {
+  if (currentItem.category == `Drinks`) {
     hideElement(toppingsContainer);
-  }
-  else {
+  } else {
     showElement(toppingsContainer);
   }
 
@@ -123,7 +121,7 @@ const cancelBtn = document.querySelector(`#cancel-btn`);
 cancelBtn.addEventListener(`click`, () => {
   hideElement(constructorContainer);
   showElement(mainContent);
-})
+});
 
 const addBtn = document.querySelector(`#add-btn`);
 addBtn.addEventListener(`click`, addToOrder);
@@ -135,11 +133,11 @@ const closeOrderBtn = document.querySelector(`#close-order-btn`);
 const proceedOrder = document.querySelector(`#proceed-order-btn`);
 
 proceedOrder.addEventListener(`click`, sendOrder);
-proceedOrder.addEventListener(`click`, resetApp)
+proceedOrder.addEventListener(`click`, resetApp);
 
 openOrderBtn.addEventListener(`click`, () => {
-  if(Object.keys(order).length == 1) {
-    return
+  if (Object.keys(order).length == 1) {
+    return;
   }
   hideElement(mainContent);
   showElement(orderContainer);
@@ -158,19 +156,20 @@ function renderInCart(item) {
   const itemImage = cartItem.querySelector("#cart-item-image");
   const itemSize = cartItem.querySelector("#cart-item-size");
   const itemPrice = cartItem.querySelector("#cart-item-price");
-  const toppingsContainer = cartItem.querySelector(`#cart-item-toppings-container`)
+  const toppingsContainer = cartItem.querySelector(
+    `#cart-item-toppings-container`
+  );
   const itemTops = cartItem.querySelector("#cart-item-toppings");
 
   itemImage.src = item.imageSource;
   itemSize.textContent = item.size;
   itemPrice.textContent = `${item.price}UAH`;
-  if(item.toppings && item.toppings.length != 0) {
+  if (item.toppings && item.toppings.length != 0) {
     showElement(toppingsContainer);
-    item.toppings.forEach(top => {
-      itemTops.innerHTML += `${top.name}<br>`
+    item.toppings.forEach((top) => {
+      itemTops.innerHTML += `${top.name}<br>`;
     });
-  }
-  else {
+  } else {
     hideElement(toppingsContainer);
   }
   updateOrderPrice(order.total);
@@ -178,17 +177,24 @@ function renderInCart(item) {
   const removeBtn = cartItem.querySelector(`#remove-btn`);
   removeBtn.addEventListener(`click`, removeFromOrder);
 
-  const orderControls = document.querySelector(`#order-controls`)
+  const orderControls = document.querySelector(`#order-controls`);
   orderContainer.insertBefore(cartItem, orderControls);
 }
 
 function addToOrder() {
   const size = document.querySelector(`input[name="size-radio"]:checked`).value;
-  const toppingsList = document.querySelectorAll(`input[name="topping-switch"]:checked`);
+  const toppingsList = document.querySelectorAll(
+    `input[name="topping-switch"]:checked`
+  );
 
-  const product = new Product(currentItem.name, currentItem.price, Product[size], currentItem.category);
-  if(currentItem.category != `Drinks`) {
-    toppingsList.forEach(top => product.addTopping(Product[top.value]));
+  const product = new Product(
+    currentItem.name,
+    currentItem.price,
+    Product[size],
+    currentItem.category
+  );
+  if (currentItem.category != `Drinks`) {
+    toppingsList.forEach((top) => product.addTopping(Product[top.value]));
   }
   currentItem.price = product.calculatePrice();
   currentItem.toppings = product.getToppings();
@@ -197,16 +203,16 @@ function addToOrder() {
   hideElement(constructorContainer);
   showElement(mainContent);
   order[currentItem.id] = currentItem;
-  console.log(order)
+  console.log(order);
   order.total += currentItem.price;
 
   renderInCart(currentItem);
 }
 
 function removeFromOrder(event) {
- const target = event.target;
- const product = target.closest(`#cart-item`);
- const removeId = +product.getAttribute(`data-id`);
+  const target = event.target;
+  const product = target.closest(`#cart-item`);
+  const removeId = +product.getAttribute(`data-id`);
 
   order.total -= order[removeId].price;
   delete order[removeId];
@@ -215,15 +221,17 @@ function removeFromOrder(event) {
 }
 
 function resetApp() {
-  order = {total: 0}
+  order = { total: 0 };
   hideElement(orderContainer);
   showElement(mainContent);
-  Array.from(orderContainer.querySelectorAll(`#cart-item`)).forEach(item => item.remove());
+  Array.from(orderContainer.querySelectorAll(`#cart-item`)).forEach((item) =>
+    item.remove()
+  );
 }
 
 async function sendOrder() {
   try {
-    const response = await fetch('http://localhost:3000/orders', {
+    const response = await fetch("http://localhost:3000/orders", {
       method: `POST`,
       headers: {
         "Content-Type": "application/json",
@@ -231,6 +239,6 @@ async function sendOrder() {
       body: JSON.stringify(order),
     });
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
   }
 }
