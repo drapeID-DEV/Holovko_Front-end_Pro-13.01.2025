@@ -1,0 +1,48 @@
+.header-container {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+  padding: 30px;
+  margin-bottom: 30px;
+  background-color: darkgray;
+}
+
+.navigation {
+  display: flex;
+  gap: 30px;
+}
+
+.content-container {
+  display: flex;
+  max-width: 100%;
+  width: 100%;
+}
+
+.categories-container {
+  display: flex;
+  flex-direction: column;
+  background-color: darkgray;
+  padding: 30px;
+  gap: 20px;
+  max-width: fit-content;
+  height: 100%;
+  margin-right: 30px;
+}
+
+.catalog-container {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  width: 100%;
+  background-color: darkgray;
+}
+
+.product-card {
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
