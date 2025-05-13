@@ -80,12 +80,11 @@
   flex-direction: column;
   align-content: center;
   gap: 10px;
-  
+  & > input {
+  font-size: 20px;
+  }
 }
 
-#login-input {
-  font-size: 20px;
-}
 
 .login-btn {
   text-align: center;
