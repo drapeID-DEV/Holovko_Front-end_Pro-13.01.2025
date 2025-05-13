@@ -3,4 +3,5 @@
 To start:
 1. Open terminal
 2. Type: cd ./vite-project
+3. Type: npm install
 3. Type: npm run dev
