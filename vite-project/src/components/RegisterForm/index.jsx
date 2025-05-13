@@ -35,7 +35,6 @@ class RegisterForm extends React.Component {
       JSON.stringify({ password: this.state.password })
     );
     this.props.onLogin(currentUser);
-    console.log(JSON.parse(localStorage.getItem(currentUser)));
   }
 
   handleLoginChange(event) {

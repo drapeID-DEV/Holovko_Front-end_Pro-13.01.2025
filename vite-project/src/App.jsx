@@ -24,7 +24,6 @@ class App extends React.Component {
     const userData = JSON.parse(
       localStorage.getItem(this.state.currentSession)
     );
-    console.log(userData);
     userData.tasks = newTasks;
     localStorage.setItem(key, JSON.stringify(userData));
   }
