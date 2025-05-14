@@ -1,91 +1,84 @@
 import React, { Component } from "react";
 import "./App.css";
-import TaskForm from "./components/TaskForm";
-import List from "./components/TaskList/List";
-import RegisterForm from "./components/RegisterForm";
-import { v4 as uuidv4 } from "uuid";
+import EmojiBtn from "./components/EmojiBtn";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      tasks: [],
-      currentSession: "",
+      emojis: {
+        "👍": 0,
+        "❤️": 0,
+        "🔥": 0,
+        "🎉": 0,
+        "😂": 0,
+      },
     };
 
-    this.addTask = this.addTask.bind(this);
-    this.deleteTask = this.deleteTask.bind(this);
-    this.doneTask = this.doneTask.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
+    this.handleVote = this.handleVote.bind(this);
+    this.showResult = this.showResult.bind(this);
   }
 
-  saveToLocal(key, newTasks) {
-    const userData = JSON.parse(
-      localStorage.getItem(this.state.currentSession)
-    );
-    userData.tasks = newTasks;
-    localStorage.setItem(key, JSON.stringify(userData));
+  handleVote(emoji) {
+    const updatedScore = { ...this.state.emojis };
+    updatedScore[emoji] += 1;
+
+    this.setState({ emojis: updatedScore });
   }
 
-  addTask(taskText) {
-    const newTasks = [
-      ...this.state.tasks,
-      { text: taskText, id: uuidv4(), done: false },
-    ];
-    this.setState({
-      tasks: newTasks,
-    });
-    this.saveToLocal(this.state.currentSession, newTasks);
-  }
+  showResult() {
+    const emojiList = this.state.emojis;
+    let winnersList;
+    let maxScore = 0;
 
-  deleteTask(id) {
-    const newTasks = this.state.tasks.filter((task) => task.id !== id);
-    this.setState({
-      tasks: newTasks,
-    });
-    this.saveToLocal(this.state.currentSession, newTasks);
-  }
-
-  doneTask(id) {
-    const newTasks = this.state.tasks.map((task) => {
-      if (task.id === id) return { ...task, done: true };
-      return task;
+    Object.entries(emojiList).forEach(([key, value]) => {
+      if (emojiList[key] == maxScore) {
+        if (winnersList) {
+          const updatedWinners = { ...winnersList };
+          updatedWinners[key] = [value];
+          winnersList = updatedWinners;
+        } else {
+          winnersList = { [key]: [value] };
+        }
+      } else if (emojiList[key] > maxScore) {
+        maxScore = emojiList[key];
+        winnersList = { [key]: [value] };
+      }
     });
 
     this.setState({
-      tasks: newTasks,
+      winner: winnersList,
     });
-    this.saveToLocal(this.state.currentSession, newTasks);
-  }
-
-  handleLogin(login) {
-    const userData = JSON.parse(localStorage.getItem(login));
-    this.setState({
-      currentSession: login,
-    });
-
-    if (userData.tasks) {
-      this.setState({
-        tasks: JSON.parse(localStorage.getItem(login)).tasks,
-      });
-    }
   }
 
   render() {
     return (
       <>
-        {!this.state.currentSession ? (
-          <RegisterForm onLogin={this.handleLogin} />
+        {!this.state.winner ? (
+          <>
+            <div className="emojis-container">
+              {Object.entries(this.state.emojis).map(([key, value]) => (
+                <EmojiBtn emoji={key} score={value} onVote={this.handleVote} />
+              ))}
+            </div>
+            <button onClick={this.showResult} className="control-btn">
+              Show result
+            </button>
+          </>
         ) : (
           <>
-            <h1 className="tasks-header">Tasks list</h1>
-            <TaskForm onSubmit={this.addTask} />
-            <List
-              todo={this.state.tasks}
-              onDelete={this.deleteTask}
-              onDone={this.doneTask}
-            />
+            <h1>
+              {Object.keys(this.state.winner).length === 1 ? "Winner" : "Draw"}
+            </h1>
+            <div className="winner-container">
+              {Object.entries(this.state.winner).map(([key, value]) => (
+                <div className="emoji-btn-container" onClick={this.handleClick}>
+                  <div className="emoji-img">{key}</div>
+                  <div className="emoji-score">{value}</div>
+                </div>
+              ))}
+            </div>
           </>
         )}
       </>

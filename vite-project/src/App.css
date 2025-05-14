@@ -1,52 +1,20 @@
-
-.tasks-header {
-  color: black;
-}
-
-.task-form {
+.emojis-container {
   display: flex;
-  gap: 15px;
+  align-items: center;
   justify-content: center;
+  gap: 30px;
 }
 
-.add-btn {
-  color: #FFF;
-  background-color: rgb(0, 139, 42);
-  padding: 5px 10px;
-  border: 0;
-  border-radius: 10px;
-  font-size: 18px;
-  transition: all 0.2s linear;
-  &:hover {
-    cursor: pointer;
-    background-color: rgb(1, 99, 30);
-  }
-}
-
-.task-list {
+.emoji-btn-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 0;
-  list-style: none;
-}
-
-.task-container {
-  background-color: darkgray;
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 15px;
-  border: 1px black;
-  border-radius: 15px;
   color: black;
   font-size: 30px;
-  width: 600px;
-}
-
-.task-controls {
-  display: flex;
-  gap: 10px;
+  margin-bottom: 30px;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .control-btn {
@@ -56,44 +24,25 @@
   border-radius: 10px;
   font-size: 18px;
   transition: all 0.2s linear;
-}
-
-.done-btn {
-  background-color: rgb(0, 139, 42);
+  background-color: rgb(0, 173, 52);
+  transition: all 0.2s linear;
   &:hover {
     cursor: pointer;
-    background-color: rgb(1, 99, 30);
+    background-color: rgb(0, 119, 36);
   }
 }
 
-.delete-btn {
-  background-color: rgb(167, 0, 0);
-  &:hover {
-    cursor: pointer;
-    background-color: rgb(104, 1, 1);
-  }
+.winner-container {
+  display: flex;
+  gap: 30px;
+  font-size: 30px;
+  justify-content: center;
 }
 
-.register-form {
-  font-size: 20px;
+.emoji-winner-container {
   display: flex;
   flex-direction: column;
-  align-content: center;
-  gap: 10px;
-  & > input {
-  font-size: 20px;
-  }
-}
-
-
-.login-btn {
-  text-align: center;
-  max-width: 50%;
-  width: 100%;
-  margin: 0 auto;
-  background-color: rgb(0, 139, 42);
-  &:hover {
-    cursor: pointer;
-    background-color: rgb(1, 99, 30);
-  }
+  align-items: center;
+  color: black;
+  font-size: 30px;
 }
