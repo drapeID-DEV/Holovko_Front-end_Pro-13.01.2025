@@ -1,96 +1,98 @@
-import React, { Component } from "react";
+import { useState } from "react";
+import Button from "./components/Button";
 import "./App.css";
-import TaskForm from "./components/TaskForm";
-import List from "./components/TaskList/List";
-import RegisterForm from "./components/RegisterForm";
-import { v4 as uuidv4 } from "uuid";
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
+function App() {
+  const [result, setResult] = useState(undefined);
+  const [curNumber, setCurNumber] = useState(0);
+  const [prevOperation, setPrevOperation] = useState("");
+  const [operationsList, setOperationsList] = useState([
+    "+",
+    "-",
+    "*",
+    "/",
+    "%",
+    "^",
+    "=",
+    "C",
+  ]);
 
-    this.state = {
-      tasks: [],
-      currentSession: "",
-    };
-
-    this.addTask = this.addTask.bind(this);
-    this.deleteTask = this.deleteTask.bind(this);
-    this.doneTask = this.doneTask.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
+  function handleInputChange(event) {
+    setCurNumber(+event.target.value);
   }
 
-  saveToLocal(key, newTasks) {
-    const userData = JSON.parse(
-      localStorage.getItem(this.state.currentSession)
-    );
-    userData.tasks = newTasks;
-    localStorage.setItem(key, JSON.stringify(userData));
-  }
+  function handleOperation(operation) {
+    if (operation === "C") {
+      setResult(undefined);
+      setCurNumber(0);
+      return;
+    }
 
-  addTask(taskText) {
-    const newTasks = [
-      ...this.state.tasks,
-      { text: taskText, id: uuidv4(), done: false },
-    ];
-    this.setState({
-      tasks: newTasks,
-    });
-    this.saveToLocal(this.state.currentSession, newTasks);
-  }
+    if (!prevOperation) {
+      if (operation !== "=") {
+        setCurNumber(0);
+      }
+      if (!result) {
+        setResult(curNumber);
+        setCurNumber(0);
+        setPrevOperation(operation);
+        return;
+      }
+      setPrevOperation(operation);
+      return;
+    }
 
-  deleteTask(id) {
-    const newTasks = this.state.tasks.filter((task) => task.id !== id);
-    this.setState({
-      tasks: newTasks,
-    });
-    this.saveToLocal(this.state.currentSession, newTasks);
-  }
+    let newResult = result;
 
-  doneTask(id) {
-    const newTasks = this.state.tasks.map((task) => {
-      if (task.id === id) return { ...task, done: true };
-      return task;
-    });
-
-    this.setState({
-      tasks: newTasks,
-    });
-    this.saveToLocal(this.state.currentSession, newTasks);
-  }
-
-  handleLogin(login) {
-    const userData = JSON.parse(localStorage.getItem(login));
-    this.setState({
-      currentSession: login,
-    });
-
-    if (userData.tasks) {
-      this.setState({
-        tasks: JSON.parse(localStorage.getItem(login)).tasks,
-      });
+    switch (prevOperation) {
+      case "+":
+        newResult = result + curNumber;
+        setResult(newResult);
+        setCurNumber(0);
+        break;
+      case "-":
+        newResult = result - curNumber;
+        setResult(newResult);
+        setCurNumber(0);
+        break;
+      case "*":
+        newResult = result * curNumber;
+        setResult(newResult);
+        setCurNumber(0);
+        break;
+      case "/":
+        newResult = result / curNumber;
+        setResult(newResult);
+        setCurNumber(0);
+        break;
+      case "%":
+        newResult = result * (curNumber / 100);
+        setResult(newResult);
+        setCurNumber(0);
+        break;
+      case "^":
+        newResult = result ** curNumber;
+        setResult(newResult);
+        setCurNumber(0);
+        break;
+    }
+    setPrevOperation(operation);
+    if (operation === "=") {
+      setCurNumber(newResult);
+      setPrevOperation("");
     }
   }
 
-  render() {
-    return (
-      <>
-        {!this.state.currentSession ? (
-          <RegisterForm onLogin={this.handleLogin} />
-        ) : (
-          <>
-            <h1 className="tasks-header">Tasks list</h1>
-            <TaskForm onSubmit={this.addTask} />
-            <List
-              todo={this.state.tasks}
-              onDelete={this.deleteTask}
-              onDone={this.doneTask}
-            />
-          </>
-        )}
-      </>
-    );
-  }
+  return (
+    <>
+      <input className="input-field" type="text" value={curNumber} onChange={handleInputChange} />
+      <div className="operations-container">
+        {operationsList.map((op) => (
+          <Button onOperation={handleOperation} operation={op} />
+        ))}
+      </div>
+    </>
+  );
 }
 
 export default App;
