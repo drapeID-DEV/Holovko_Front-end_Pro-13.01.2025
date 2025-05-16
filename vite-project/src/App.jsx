@@ -18,7 +18,13 @@ function App() {
   ]);
 
   function handleInputChange(event) {
+    if (!isFinite(event.target.value)) return;
     setCurNumber(+event.target.value);
+  }
+
+  function saveResult(newResult) {
+    setResult(newResult);
+    setCurNumber(0);
   }
 
   function handleOperation(operation) {
@@ -47,33 +53,27 @@ function App() {
     switch (prevOperation) {
       case "+":
         newResult = result + curNumber;
-        setResult(newResult);
-        setCurNumber(0);
+        saveResult(newResult);
         break;
       case "-":
         newResult = result - curNumber;
-        setResult(newResult);
-        setCurNumber(0);
+        saveResult(newResult);
         break;
       case "*":
         newResult = result * curNumber;
-        setResult(newResult);
-        setCurNumber(0);
+        saveResult(newResult);
         break;
       case "/":
         newResult = result / curNumber;
-        setResult(newResult);
-        setCurNumber(0);
+        saveResult(newResult);
         break;
       case "%":
         newResult = result * (curNumber / 100);
-        setResult(newResult);
-        setCurNumber(0);
+        saveResult(newResult);
         break;
       case "^":
         newResult = result ** curNumber;
-        setResult(newResult);
-        setCurNumber(0);
+        saveResult(newResult);
         break;
     }
     setPrevOperation(operation);
@@ -85,7 +85,12 @@ function App() {
 
   return (
     <>
-      <input className="input-field" type="text" value={curNumber} onChange={handleInputChange} />
+      <input
+        className="input-field"
+        type="text"
+        value={curNumber}
+        onChange={handleInputChange}
+      />
       <div className="operations-container">
         {operationsList.map((op) => (
           <Button onOperation={handleOperation} operation={op} />
