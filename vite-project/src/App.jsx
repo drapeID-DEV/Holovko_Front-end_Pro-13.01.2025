@@ -1,101 +1,66 @@
-import { useState } from "react";
-import Button from "./components/Button";
+import ContactContext from "./contexts/ContactContaxt";
+import FormComponent from "./components/FormComponent";
+import ContactsList from "./components/ContactsList";
+import Button from '@mui/material/Button';
 import "./App.css";
+import { useEffect, useState } from "react";
 
 function App() {
-  const [result, setResult] = useState(undefined);
-  const [curNumber, setCurNumber] = useState(0);
-  const [prevOperation, setPrevOperation] = useState("");
-  const [operationsList, setOperationsList] = useState([
-    "+",
-    "-",
-    "*",
-    "/",
-    "%",
-    "^",
-    "=",
-    "C",
-  ]);
+  const [contacts, setContacts] = useState([]);
+  const [showForm, setShowForm] = useState(false);
 
-  function handleInputChange(event) {
-    if (!isFinite(event.target.value)) return;
-    setCurNumber(+event.target.value);
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) => response.json())
+      .then((json) =>
+        json.forEach((contact) => {
+          const fullname = contact.name.split(" ");
+          const telephone = contact.phone.split(" ")[0];
+          setContacts((prevContacts) => [
+            ...prevContacts,
+            { name: fullname[0], surname: fullname[1], telephone },
+          ]);
+        })
+      );
+  }, []);
+
+  function switchTab(event) {
+    const tab = event.target.getAttribute("data-name");
+    switch (tab) {
+      case "form":
+        setShowForm(true);
+        break;
+      case "list":
+        setShowForm(false);
+        break;
+    }
   }
 
-  function saveResult(newResult) {
-    setResult(newResult);
-    setCurNumber(0);
+  function addContact(newContact) {
+    setContacts((prevContacts) => [...prevContacts, newContact]);
   }
 
-  function handleOperation(operation) {
-    if (operation === "C") {
-      setResult(undefined);
-      setCurNumber(0);
-      return;
-    }
+  function removeContact(indexToRemove) {
+    setContacts((prevContacts) =>
+      prevContacts.filter((contact, index) => index !== indexToRemove)
+    );
+  }
 
-    if (!prevOperation) {
-      if (operation !== "=") {
-        setCurNumber(0);
-      }
-      if (!result) {
-        setResult(curNumber);
-        setCurNumber(0);
-        setPrevOperation(operation);
-        return;
-      }
-      setPrevOperation(operation);
-      return;
-    }
-
-    let newResult = result;
-
-    switch (prevOperation) {
-      case "+":
-        newResult = result + curNumber;
-        saveResult(newResult);
-        break;
-      case "-":
-        newResult = result - curNumber;
-        saveResult(newResult);
-        break;
-      case "*":
-        newResult = result * curNumber;
-        saveResult(newResult);
-        break;
-      case "/":
-        newResult = result / curNumber;
-        saveResult(newResult);
-        break;
-      case "%":
-        newResult = result * (curNumber / 100);
-        saveResult(newResult);
-        break;
-      case "^":
-        newResult = result ** curNumber;
-        saveResult(newResult);
-        break;
-    }
-    setPrevOperation(operation);
-    if (operation === "=") {
-      setCurNumber(newResult);
-      setPrevOperation("");
-    }
+  function cancelForm() {
+    setShowForm(false);
   }
 
   return (
     <>
-      <input
-        className="input-field"
-        type="text"
-        value={curNumber}
-        onChange={handleInputChange}
-      />
-      <div className="operations-container">
-        {operationsList.map((op) => (
-          <Button onOperation={handleOperation} operation={op} />
-        ))}
+      <div className="page-controls">
+        <Button disableElevation variant="contained" data-name="form" onClick={switchTab}>Form</Button>
+        <Button disableElevation variant="contained" data-name="list" onClick={switchTab}>List</Button>
       </div>
+      <ContactContext.Provider
+        value={{ contacts, removeContact, addContact, cancelForm }}
+      >
+        {showForm ? <FormComponent /> : <ContactsList />}
+      </ContactContext.Provider>
     </>
   );
 }
