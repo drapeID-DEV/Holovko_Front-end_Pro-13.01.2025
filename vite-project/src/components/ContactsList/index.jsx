@@ -1,9 +1,8 @@
 import { useContext } from "react";
-import Contact from "../Contact";
 import ContactContext from "../../contexts/ContactContaxt";
 import { Button, List, ListItem, ListItemText } from "@mui/material";
 
-function ContactsList(props) {
+function ContactsList() {
   const { contacts, removeContact } = useContext(ContactContext);
 
   return (
