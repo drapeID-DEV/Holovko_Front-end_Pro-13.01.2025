@@ -1,15 +1,17 @@
 import { useContext, useState } from "react";
 import ContactContext from "../../contexts/ContactContaxt";
 import { Button, TextField } from "@mui/material";
+import { useNavigate } from "react-router";
 
 function FormComponent(props) {
-  const { addContact } = useContext(ContactContext);
-  const { cancelForm } = useContext(ContactContext);
+  const { addContact, backToForm } = useContext(ContactContext);
   const [contact, setContact] = useState({
     name: "",
     surname: "",
     telephone: "",
   });
+
+  const navigate = useNavigate();
 
   function handleSubmit(event) {
     debugger;
@@ -41,16 +43,6 @@ function FormComponent(props) {
       ...prevContact,
       telephone: event.target.value,
     }));
-  }
-
-  function handleCancelClick(event) {
-    event.preventDefault();
-    setContact({
-      name: "",
-      surname: "",
-      telephone: "",
-    });
-    cancelForm();
   }
 
   return (
@@ -85,7 +77,13 @@ function FormComponent(props) {
           <Button type="submit" variant="contained">
             Add
           </Button>
-          <Button onClick={handleCancelClick} variant="outlined" color="error">
+          <Button
+            onClick={() => {
+              navigate("/contacts");
+            }}
+            variant="outlined"
+            color="error"
+          >
             Cancel
           </Button>
         </div>
