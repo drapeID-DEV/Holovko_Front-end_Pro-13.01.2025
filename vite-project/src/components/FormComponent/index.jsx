@@ -4,7 +4,7 @@ import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router";
 
 function FormComponent(props) {
-  const { addContact, backToForm } = useContext(ContactContext);
+  const { addContact } = useContext(ContactContext);
   const [contact, setContact] = useState({
     name: "",
     surname: "",
@@ -14,7 +14,6 @@ function FormComponent(props) {
   const navigate = useNavigate();
 
   function handleSubmit(event) {
-    debugger;
     event.preventDefault();
     addContact(contact);
     setContact({
