@@ -2,7 +2,20 @@
     display: flex;
     justify-content: center;
     gap: 10px;
+    margin-bottom: 20px;
 }
+
+.update-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #FFF;
+    padding: 80px;
+    border-radius: 20px;
+    border: 2px solid black;
+}
+
 
 .add-form {
     display: flex;
@@ -16,4 +29,8 @@
     margin-top: 15px;
     display: flex;
     gap: 20px;
+}
+
+.input-field {
+    margin-bottom: 20px;
 }

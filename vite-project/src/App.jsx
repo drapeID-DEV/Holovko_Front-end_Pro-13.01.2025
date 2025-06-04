@@ -1,15 +1,18 @@
-import ContactContext from "./contexts/ContactContaxt";
-import FormComponent from "./components/FormComponent";
 import ContactsList from "./components/ContactsList";
+import UpdateForm from "./components/UpdateForm";
 import Button from "@mui/material/Button";
 import { useNavigate, Routes, Route } from "react-router";
+import { Form } from "react-final-form";
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import AddForm from "./components/AddForm";
+import { useDispatch } from "react-redux";
+import { addContact, updateContact } from "./store/slices/contactSlice";
 
 function App() {
-  const [contacts, setContacts] = useState([]);
-
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
@@ -18,22 +21,21 @@ function App() {
         json.forEach((contact) => {
           const fullname = contact.name.split(" ");
           const telephone = contact.phone.split(" ")[0];
-          setContacts((prevContacts) => [
-            ...prevContacts,
-            { name: fullname[0], surname: fullname[1], telephone },
-          ]);
+          dispatch(
+            addContact({ name: fullname[0], surname: fullname[1], telephone })
+          );
         })
       );
   }, []);
 
-  function addContact(newContact) {
-    setContacts((prevContacts) => [...prevContacts, newContact]);
+  function handleAdd(values, form) {
+    dispatch(addContact(values));
+    form.reset();
   }
 
-  function removeContact(indexToRemove) {
-    setContacts((prevContacts) =>
-      prevContacts.filter((contact, index) => index !== indexToRemove)
-    );
+  function handleUpdate(values) {
+    dispatch(updateContact(values));
+    navigate("/contacts");
   }
 
   return (
@@ -56,12 +58,38 @@ function App() {
           List
         </Button>
       </div>
-      <ContactContext.Provider value={{ contacts, removeContact, addContact }}>
-        <Routes>
-          <Route path="/form" element={<FormComponent />} />
-          <Route path="/contacts" element={<ContactsList />} />
-        </Routes>
-      </ContactContext.Provider>
+      <Routes>
+        <Route
+          path="/form"
+          element={
+            <Form
+              initialValues={{
+                name: "",
+                surname: "",
+                telephone: "",
+              }}
+              onSubmit={handleAdd}
+              render={AddForm}
+            />
+          }
+        />
+        <Route path="/contacts" element={<ContactsList />}>
+          <Route
+            path="update/:id"
+            element={
+              <Form
+                initialValues={{
+                  name: "",
+                  surname: "",
+                  telephone: "",
+                }}
+                onSubmit={handleUpdate}
+                render={UpdateForm}
+              />
+            }
+          />
+        </Route>
+      </Routes>
     </>
   );
 }

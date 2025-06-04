@@ -1,25 +1,43 @@
-import { useContext } from "react";
-import ContactContext from "../../contexts/ContactContaxt";
 import { Button, List, ListItem, ListItemText } from "@mui/material";
+import { Outlet, useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { removeContact } from "../../store/slices/contactSlice";
 
 function ContactsList() {
-  const { contacts, removeContact } = useContext(ContactContext);
+  const contacts = useSelector((state) => state.contacts);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  function handleRemove(indexToRemove) {
+    dispatch(removeContact(indexToRemove));
+  }
 
   return (
     <>
-      <List sx={{ width: 400 }}>
+      <List sx={{ width: 600 }}>
         {contacts.map((contact, index) => (
           <ListItem
             key={index}
             disableGutters
             secondaryAction={
-              <Button
-                color="error"
-                variant="contained"
-                onClick={() => removeContact(index)}
-              >
-                Delete
-              </Button>
+              <>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    navigate(`/contacts/update/` + index);
+                  }}
+                >
+                  Update
+                </Button>
+                <Button
+                  color="error"
+                  variant="contained"
+                  onClick={() => handleRemove(index)}
+                >
+                  Delete
+                </Button>
+              </>
             }
           >
             <ListItemText
@@ -30,6 +48,7 @@ function ContactsList() {
           </ListItem>
         ))}
       </List>
+      <Outlet />
     </>
   );
 }
