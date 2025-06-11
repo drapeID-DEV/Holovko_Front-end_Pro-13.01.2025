@@ -1,95 +1,97 @@
-import ContactsList from "./components/ContactsList";
-import UpdateForm from "./components/UpdateForm";
-import Button from "@mui/material/Button";
 import { useNavigate, Routes, Route } from "react-router";
 import { Form } from "react-final-form";
 import "./App.css";
-import { useEffect } from "react";
-import AddForm from "./components/AddForm";
+import LoginForm from "./components/LoginForm";
 import { useDispatch } from "react-redux";
-import { addContact, updateContact } from "./store/slices/contactSlice";
+import { fetchUserLogin } from "./store/slices/loginSlice";
+import ProductsList from "./components/ProductsList";
+import ControlForm from "./components/ControlForm";
+import Header from "./components/Header";
+import {
+  addProduct,
+  fetchProducts,
+  updateProduct,
+} from "./store/slices/productsSlice";
+import { useEffect, useState } from "react";
+import ModalRemove from "./components/ModalRemove";
+import Preview from "./components/Preview";
 
 function App() {
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
 
+  const [open, setOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+
+  const openModal = (id) => {
+    setSelectedId(id);
+    setOpen(true);
+  };
+
+  const closeModal = () => {
+    setOpen(false);
+  };
+
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => response.json())
-      .then((json) =>
-        json.forEach((contact) => {
-          const fullname = contact.name.split(" ");
-          const telephone = contact.phone.split(" ")[0];
-          dispatch(
-            addContact({ name: fullname[0], surname: fullname[1], telephone })
-          );
-        })
-      );
+    dispatch(fetchProducts());
   }, []);
 
-  function handleAdd(values, form) {
-    dispatch(addContact(values));
-    form.reset();
+  async function handleLogin(values) {
+    const result = await dispatch(fetchUserLogin(values));
+    if (result.payload) {
+      navigate("/products");
+    }
   }
 
-  function handleUpdate(values) {
-    dispatch(updateContact(values));
-    navigate("/contacts");
+  async function handleEdit(values) {
+    let result;
+    if (values.id != undefined) {
+      result = await dispatch(updateProduct(values));
+    } else {
+      result = await dispatch(addProduct(values));
+    }
+    if (result.payload) {
+      navigate("/products");
+    }
   }
 
   return (
     <>
-      <div className="page-controls">
-        <Button
-          disableElevation
-          variant="contained"
-          data-name="form"
-          onClick={() => navigate("/form")}
-        >
-          Form
-        </Button>
-        <Button
-          disableElevation
-          variant="contained"
-          data-name="list"
-          onClick={() => navigate("/contacts")}
-        >
-          List
-        </Button>
-      </div>
       <Routes>
         <Route
-          path="/form"
+          path="/"
           element={
             <Form
               initialValues={{
-                name: "",
-                surname: "",
-                telephone: "",
+                username: "",
+                password: "",
               }}
-              onSubmit={handleAdd}
-              render={AddForm}
+              onSubmit={handleLogin}
+              render={LoginForm}
             />
           }
         />
-        <Route path="/contacts" element={<ContactsList />}>
+        <Route path="/products" element={<Header />}>
+          <Route index element={<ProductsList onOpenModal={openModal} />} />
           <Route
-            path="update/:id"
+            path="/products/edit/:action/:id?"
             element={
               <Form
                 initialValues={{
+                  category: "",
                   name: "",
-                  surname: "",
-                  telephone: "",
+                  quantity: "",
+                  price: "",
                 }}
-                onSubmit={handleUpdate}
-                render={UpdateForm}
+                onSubmit={handleEdit}
+                render={ControlForm}
               />
             }
           />
+          <Route path="/products/preview" element={<Preview />} />
         </Route>
       </Routes>
+      <ModalRemove open={open} onClose={closeModal} selectedId={selectedId} />
     </>
   );
 }
