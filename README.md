@@ -8,3 +8,6 @@ To start:
 5. In second terminal type: cd .\vite-project\
 6. In second terminal type: npm install
 7. In second terminal type: npm run dev
+8. To login:
+User Name: admin
+Password: admin
